@@ -29,15 +29,15 @@ const About = () => {
       </section>
 
       {/* Narrative Section */}
-      <section className="py-24 bg-white">
+      <section className="py-24 bg-white dark:bg-secondary-800/40 transition-theme">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-20">
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
             {/* Left Content */}
             <div className="lg:col-span-7 space-y-6">
-              <h2 className="font-serif text-3xl sm:text-4xl font-bold text-secondary-800">
+              <h2 className="font-serif text-3xl sm:text-4xl font-bold text-secondary-800 dark:text-warm-50 transition-theme">
                 The Heritage of the Kumaon Region
               </h2>
-              <div className="text-secondary-700 space-y-4 leading-relaxed">
+              <div className="text-secondary-700 dark:text-warm-200 space-y-4 leading-relaxed transition-theme">
                 <p>
                   Nestled in the towering heights of the Indian Himalayas, the Kumaon region of Uttarakhand boasts a rich cultural history. Isolated for centuries in pristine valleys, local communities developed unique artistic expressions born from nature, devotion, and daily utility.
                 </p>
@@ -52,7 +52,7 @@ const About = () => {
 
             {/* Right Side Image */}
             <div className="lg:col-span-5 relative flex justify-center">
-              <div className="relative w-80 h-96 rounded-2xl overflow-hidden shadow-2xl border-4 border-warm-100">
+              <div className="relative w-80 h-96 rounded-2xl overflow-hidden shadow-2xl border-4 border-warm-100 dark:border-secondary-750 transition-theme">
                 <img
                   src="https://images.unsplash.com/photo-1595475207225-428b62bda831?q=80&w=600&auto=format&fit=crop"
                   alt="Traditional Weaving Loom"
@@ -65,53 +65,53 @@ const About = () => {
           {/* Grid describing the four key crafts */}
           <div className="space-y-12">
             <div className="text-center space-y-4 max-w-xl mx-auto">
-              <h3 className="font-serif text-2xl sm:text-3xl font-bold text-secondary-800">Four Pillars of Kumaon Craft</h3>
-              <p className="text-xs sm:text-sm text-secondary-700">
+              <h3 className="font-serif text-2xl sm:text-3xl font-bold text-secondary-800 dark:text-warm-100 transition-theme">Four Pillars of Kumaon Craft</h3>
+              <p className="text-xs sm:text-sm text-secondary-700 dark:text-warm-300 transition-theme">
                 Our platform stands dedicated to preserving these four traditional Himalayan crafts, bringing financial sustainability to their practitioners.
               </p>
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
               {/* Craft 1 */}
-              <div className="bg-warm-50 p-6 rounded-2xl border border-warm-200/60 hover:shadow-lg transition-all duration-300 space-y-4">
-                <div className="w-12 h-12 rounded-xl bg-primary-100 text-primary-600 flex items-center justify-center font-bold text-lg">
+              <div className="bg-warm-50 dark:bg-secondary-800/60 p-6 rounded-2xl border border-warm-200/60 dark:border-secondary-700/50 hover:shadow-lg transition-all duration-300 space-y-4 transition-theme">
+                <div className="w-12 h-12 rounded-xl bg-primary-100 dark:bg-secondary-900 text-primary-600 flex items-center justify-center font-bold text-lg transition-theme">
                   🧶
                 </div>
-                <h4 className="font-serif text-lg font-bold text-secondary-800">Handloom & Weaving</h4>
-                <p className="text-xs text-secondary-700 leading-relaxed">
+                <h4 className="font-serif text-lg font-bold text-secondary-800 dark:text-warm-50 transition-theme">Handloom & Weaving</h4>
+                <p className="text-xs text-secondary-700 dark:text-warm-200 leading-relaxed transition-theme">
                   Spun from local Himalayan sheep wool and giant nettle fibers, this craft provides livelihoods to women-run self-help groups.
                 </p>
               </div>
 
               {/* Craft 2 */}
-              <div className="bg-warm-50 p-6 rounded-2xl border border-warm-200/60 hover:shadow-lg transition-all duration-300 space-y-4">
-                <div className="w-12 h-12 rounded-xl bg-primary-100 text-primary-600 flex items-center justify-center font-bold text-lg">
+              <div className="bg-warm-50 dark:bg-secondary-800/60 p-6 rounded-2xl border border-warm-200/60 dark:border-secondary-700/50 hover:shadow-lg transition-all duration-300 space-y-4 transition-theme">
+                <div className="w-12 h-12 rounded-xl bg-primary-100 dark:bg-secondary-900 text-primary-600 flex items-center justify-center font-bold text-lg transition-theme">
                   ⚒️
                 </div>
-                <h4 className="font-serif text-lg font-bold text-secondary-800">Tamta Copperware</h4>
-                <p className="text-xs text-secondary-700 leading-relaxed">
+                <h4 className="font-serif text-lg font-bold text-secondary-800 dark:text-warm-50 transition-theme">Tamta Copperware</h4>
+                <p className="text-xs text-secondary-700 dark:text-warm-200 leading-relaxed transition-theme">
                   Hand-hammered water vessels, ritual plates, and kitchenware made by coppersmith families in Almora, renowned for therapeutic benefits.
                 </p>
               </div>
 
               {/* Craft 3 */}
-              <div className="bg-warm-50 p-6 rounded-2xl border border-warm-200/60 hover:shadow-lg transition-all duration-300 space-y-4">
-                <div className="w-12 h-12 rounded-xl bg-primary-100 text-primary-600 flex items-center justify-center font-bold text-lg">
+              <div className="bg-warm-50 dark:bg-secondary-800/60 p-6 rounded-2xl border border-warm-200/60 dark:border-secondary-700/50 hover:shadow-lg transition-all duration-300 space-y-4 transition-theme">
+                <div className="w-12 h-12 rounded-xl bg-primary-100 dark:bg-secondary-900 text-primary-600 flex items-center justify-center font-bold text-lg transition-theme">
                   🪶
                 </div>
-                <h4 className="font-serif text-lg font-bold text-secondary-800">Likhai Woodcraft</h4>
-                <p className="text-xs text-secondary-700 leading-relaxed">
+                <h4 className="font-serif text-lg font-bold text-secondary-800 dark:text-warm-50 transition-theme">Likhai Woodcraft</h4>
+                <p className="text-xs text-secondary-700 dark:text-warm-200 leading-relaxed transition-theme">
                   Traditional wooden architectural carving featuring highly detailed floral, mythical, and geometrical motifs on doors, windows, and lintels.
                 </p>
               </div>
 
               {/* Craft 4 */}
-              <div className="bg-warm-50 p-6 rounded-2xl border border-warm-200/60 hover:shadow-lg transition-all duration-300 space-y-4">
-                <div className="w-12 h-12 rounded-xl bg-primary-100 text-primary-600 flex items-center justify-center font-bold text-lg">
+              <div className="bg-warm-50 dark:bg-secondary-800/60 p-6 rounded-2xl border border-warm-200/60 dark:border-secondary-700/50 hover:shadow-lg transition-all duration-300 space-y-4 transition-theme">
+                <div className="w-12 h-12 rounded-xl bg-primary-100 dark:bg-secondary-900 text-primary-600 flex items-center justify-center font-bold text-lg transition-theme">
                   🎨
                 </div>
-                <h4 className="font-serif text-lg font-bold text-secondary-800">Aipan Folk Art</h4>
-                <p className="text-xs text-secondary-700 leading-relaxed">
+                <h4 className="font-serif text-lg font-bold text-secondary-800 dark:text-warm-50 transition-theme">Aipan Folk Art</h4>
+                <p className="text-xs text-secondary-700 dark:text-warm-200 leading-relaxed transition-theme">
                   Unique ritual paintwork characterized by white paste motifs painted over a smooth terracotta base, symbolizing holy protection.
                 </p>
               </div>
@@ -121,28 +121,28 @@ const About = () => {
       </section>
 
       {/* Mission & Purpose Section */}
-      <section className="bg-warm-100/60 py-24 border-t border-b border-warm-200">
+      <section className="bg-warm-100/60 dark:bg-secondary-900/40 py-24 border-t border-b border-warm-200 dark:border-secondary-800 transition-theme">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="max-w-3xl mx-auto text-center space-y-8">
-            <h2 className="font-serif text-3xl sm:text-4xl font-bold text-secondary-800">Why Kumaon Craft Connect?</h2>
+            <h2 className="font-serif text-3xl sm:text-4xl font-bold text-secondary-800 dark:text-warm-50 transition-theme">Why Kumaon Craft Connect?</h2>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-8 text-left">
-              <div className="bg-white p-6 rounded-2xl shadow-sm border border-warm-200 space-y-3">
-                <h4 className="font-bold text-secondary-800 text-sm">Direct Livelihoods</h4>
-                <p className="text-xs text-secondary-700 leading-relaxed">
+              <div className="bg-white dark:bg-secondary-800/80 p-6 rounded-2xl shadow-sm border border-warm-200 dark:border-secondary-700 space-y-3 transition-theme">
+                <h4 className="font-bold text-secondary-800 dark:text-warm-100 text-sm transition-theme">Direct Livelihoods</h4>
+                <p className="text-xs text-secondary-700 dark:text-warm-300 leading-relaxed transition-theme">
                   Eliminates intermediate middlemen. Up to 85% of wholesale pricing goes directly into the artisans bank account.
                 </p>
               </div>
 
-              <div className="bg-white p-6 rounded-2xl shadow-sm border border-warm-200 space-y-3">
-                <h4 className="font-bold text-secondary-800 text-sm">Cultural Preservation</h4>
-                <p className="text-xs text-secondary-700 leading-relaxed">
+              <div className="bg-white dark:bg-secondary-800/80 p-6 rounded-2xl shadow-sm border border-warm-200 dark:border-secondary-700 space-y-3 transition-theme">
+                <h4 className="font-bold text-secondary-800 dark:text-warm-100 text-sm transition-theme">Cultural Preservation</h4>
+                <p className="text-xs text-secondary-700 dark:text-warm-300 leading-relaxed transition-theme">
                   By building stable commercial value for traditional designs, younger generations of artisans are encouraged to learn the skills.
                 </p>
               </div>
 
-              <div className="bg-white p-6 rounded-2xl shadow-sm border border-warm-200 space-y-3">
-                <h4 className="font-bold text-secondary-800 text-sm">Ecological Sourcing</h4>
-                <p className="text-xs text-secondary-700 leading-relaxed">
+              <div className="bg-white dark:bg-secondary-800/80 p-6 rounded-2xl shadow-sm border border-warm-200 dark:border-secondary-700 space-y-3 transition-theme">
+                <h4 className="font-bold text-secondary-800 dark:text-warm-100 text-sm transition-theme">Ecological Sourcing</h4>
+                <p className="text-xs text-secondary-700 dark:text-warm-300 leading-relaxed transition-theme">
                   Every product uses naturally occurring, bio-sourced raw materials from the Himalayan hills, processed using organic methodologies.
                 </p>
               </div>

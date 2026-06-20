@@ -97,7 +97,7 @@ const Home = () => {
             <Navbar />
 
             {/* Hero Section */}
-            <section className="relative overflow-hidden bg-gradient-to-br from-warm-100 via-white to-primary-50 py-24 md:py-32 border-b border-warm-200">
+            <section className="relative overflow-hidden bg-gradient-to-br from-warm-100 via-white to-primary-50 dark:from-secondary-900 dark:via-secondary-850 dark:to-primary-950/20 py-24 md:py-32 border-b border-warm-200 dark:border-secondary-800 transition-theme">
                 {/* <div className="absolute inset-0 z-0 opacity-40">
           <div className="absolute -top-40 -right-40 w-96 h-96 rounded-full bg-primary-200/50 blur-3xl animate-pulse" />
           <div className="absolute bottom-10 left-10 w-80 h-80 rounded-full bg-secondary-100 blur-3xl" />
@@ -107,29 +107,29 @@ const Home = () => {
                     <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
                         {/* Hero Text */}
                         <div className="lg:col-span-7 space-y-6 text-center lg:text-left animate-fade-in-up">
-                            <span className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-extrabold uppercase tracking-widest text-primary-600 bg-primary-50 border border-primary-200 shadow-sm">
+                            <span className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-extrabold uppercase tracking-widest text-primary-600 dark:text-primary-400 bg-primary-50 dark:bg-secondary-800 border border-primary-200 dark:border-secondary-700 shadow-sm transition-theme">
                                 <span className="w-2 h-2 rounded-full bg-primary-500" />
                                 Preserving Himalayan Legacy
                             </span>
 
-                            <h1 className="font-serif text-4xl sm:text-5xl lg:text-6xl font-extrabold text-secondary-800 leading-tight">
+                            <h1 className="font-serif text-4xl sm:text-5xl lg:text-6xl font-extrabold text-secondary-800 dark:text-warm-100 leading-tight transition-theme">
                                 Authentic Craftsmanship from the <span className="text-primary-500">Kumaon Hills</span>
                             </h1>
 
-                            <p className="text-lg text-secondary-700 leading-relaxed max-w-2xl">
+                            <p className="text-lg text-secondary-700 dark:text-warm-200 leading-relaxed max-w-2xl transition-theme">
                                 Direct trade portal connecting authentic Himalayan handloom weavers, copper beaters, wood artisans, and Aipan artists directly with conscious retail partners and institutional bulk buyers.
                             </p>
 
                             <div className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start pt-4">
                                 <a
                                     href="#catalog"
-                                    className="px-8 py-4 bg-primary-500 hover:bg-primary-600 text-white rounded-xl text-base font-bold tracking-wide shadow-lg hover:shadow-primary-500/20 hover:scale-[1.02] transition-all duration-300"
+                                    className="px-8 py-4 bg-primary-500 hover:bg-primary-600 text-white rounded-xl text-base font-bold tracking-wide shadow-lg hover:shadow-primary-500/20 hover:scale-[1.02] transition-all duration-300 flex items-center justify-center cursor-pointer"
                                 >
                                     Explore Digital Catalog
                                 </a>
                                 <a
                                     href="#why-kumaon"
-                                    className="px-8 py-4 border border-secondary-600/30 text-secondary-800 hover:bg-secondary-50 hover:border-secondary-800 rounded-xl text-base font-bold tracking-wide transition-all duration-300"
+                                    className="px-8 py-4 border border-secondary-600/30 dark:border-warm-300/30 text-secondary-800 dark:text-warm-100 hover:bg-secondary-50 dark:hover:bg-secondary-800 hover:border-secondary-800 dark:hover:border-warm-200 rounded-xl text-base font-bold tracking-wide transition-all duration-300 flex items-center justify-center cursor-pointer"
                                 >
                                     Our Heritage Mission
                                 </a>
@@ -138,22 +138,22 @@ const Home = () => {
 
                         {/* Hero Decorative Image Panel */}
                         <div className="lg:col-span-5 relative flex justify-center">
-                            <div className="relative w-80 h-96 sm:w-96 sm:h-[450px] rounded-3xl overflow-hidden shadow-2xl border-4 border-white rotate-2 hover:rotate-0 transition-all duration-500 bg-warm-200">
+                            <div className="relative w-80 h-96 sm:w-96 sm:h-[450px] rounded-3xl overflow-hidden shadow-2xl border-4 border-white dark:border-secondary-850 rotate-2 hover:rotate-0 transition-all duration-500 bg-warm-200 dark:bg-secondary-800 transition-theme">
                                 <img
                                     src="https://images.unsplash.com/photo-1544816155-12df9643f363?q=80&w=600&auto=format&fit=crop"
                                     alt="Kumaon Craft Showcase"
                                     className="w-full h-full object-cover"
                                 />
                                 {/* Overlay Card */}
-                                <div className="absolute bottom-6 left-6 right-6 p-5 rounded-2xl bg-white/90 backdrop-blur-md border border-warm-100 shadow-xl space-y-2">
-                                    <div className="flex items-center gap-1.5 text-primary-500 font-bold text-xs uppercase tracking-wider">
-                                        <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <div className="absolute bottom-6 left-6 right-6 p-5 rounded-2xl bg-white/90 dark:bg-secondary-900/90 backdrop-blur-md border border-warm-100 dark:border-secondary-800 shadow-xl space-y-2 transition-theme">
+                                    <div className="flex items-center gap-1.5 text-primary-500 dark:text-primary-400 font-bold text-xs uppercase tracking-wider transition-theme">
+                                        <svg className="w-4.5 h-4.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
                                         </svg>
                                         <span>100% Direct Fair Trade</span>
                                     </div>
-                                    <h4 className="font-serif text-lg font-bold text-secondary-800">Support Rural Livelihoods</h4>
-                                    <p className="text-xs text-secondary-600">Proceeds flow directly back to home-based artisan guilds in Uttarakhand.</p>
+                                    <h4 className="font-serif text-lg font-bold text-secondary-800 dark:text-warm-100 transition-theme">Support Rural Livelihoods</h4>
+                                    <p className="text-xs text-secondary-600 dark:text-warm-300 transition-theme">Proceeds flow directly back to home-based artisan guilds in Uttarakhand.</p>
                                 </div>
                             </div>
                         </div>
@@ -162,53 +162,53 @@ const Home = () => {
             </section>
 
             {/* Impact Stats Section */}
-            <section id="why-kumaon" className="py-16 bg-white border-b border-warm-200">
+            <section id="why-kumaon" className="py-16 bg-white dark:bg-secondary-800/40 border-b border-warm-200 dark:border-secondary-800 transition-theme">
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                     <div className="grid grid-cols-2 lg:grid-cols-4 gap-8 text-center">
                         <div className="space-y-1">
-                            <div className="text-3xl sm:text-4xl font-extrabold text-primary-500 font-serif">50+</div>
-                            <div className="text-xs sm:text-sm font-bold uppercase tracking-wider text-secondary-600">Home Artisans</div>
+                            <div className="text-3xl sm:text-4xl font-extrabold text-primary-500 dark:text-primary-400 font-serif transition-theme">50+</div>
+                            <div className="text-xs sm:text-sm font-bold uppercase tracking-wider text-secondary-600 dark:text-warm-300 transition-theme">Home Artisans</div>
                         </div>
-                        <div className="space-y-1 border-l border-warm-200">
-                            <div className="text-3xl sm:text-4xl font-extrabold text-primary-500 font-serif">4 Categories</div>
-                            <div className="text-xs sm:text-sm font-bold uppercase tracking-wider text-secondary-600">Heritage Crafts</div>
+                        <div className="space-y-1 border-l border-warm-200 dark:border-secondary-800 transition-theme">
+                            <div className="text-3xl sm:text-4xl font-extrabold text-primary-500 dark:text-primary-400 font-serif transition-theme">4 Categories</div>
+                            <div className="text-xs sm:text-sm font-bold uppercase tracking-wider text-secondary-600 dark:text-warm-300 transition-theme">Heritage Crafts</div>
                         </div>
-                        <div className="space-y-1 border-l border-warm-200">
-                            <div className="text-3xl sm:text-4xl font-extrabold text-primary-500 font-serif">0%</div>
-                            <div className="text-xs sm:text-sm font-bold uppercase tracking-wider text-secondary-600">Middlemen Cuts</div>
+                        <div className="space-y-1 border-l border-warm-200 dark:border-secondary-800 transition-theme">
+                            <div className="text-3xl sm:text-4xl font-extrabold text-primary-500 dark:text-primary-400 font-serif transition-theme">0%</div>
+                            <div className="text-xs sm:text-sm font-bold uppercase tracking-wider text-secondary-600 dark:text-warm-300 transition-theme">Middlemen Cuts</div>
                         </div>
-                        <div className="space-y-1 border-l border-warm-200">
-                            <div className="text-3xl sm:text-4xl font-extrabold text-primary-500 font-serif">100%</div>
-                            <div className="text-xs sm:text-sm font-bold uppercase tracking-wider text-secondary-600">Handmade Guarantee</div>
+                        <div className="space-y-1 border-l border-warm-200 dark:border-secondary-800 transition-theme">
+                            <div className="text-3xl sm:text-4xl font-extrabold text-primary-500 dark:text-primary-400 font-serif transition-theme">100%</div>
+                            <div className="text-xs sm:text-sm font-bold uppercase tracking-wider text-secondary-600 dark:text-warm-300 transition-theme">Handmade Guarantee</div>
                         </div>
                     </div>
                 </div>
             </section>
 
             {/* Digital Catalog Section */}
-            <section id="catalog" className="py-24 bg-warm-50 flex-grow">
+            <section id="catalog" className="py-24 bg-warm-50 dark:bg-secondary-900/30 flex-grow transition-theme">
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12">
                     {/* Header */}
                     <div className="text-center space-y-4 max-w-2xl mx-auto">
-                        <h2 className="font-serif text-3xl sm:text-4xl font-bold text-secondary-800">
+                        <h2 className="font-serif text-3xl sm:text-4xl font-bold text-secondary-800 dark:text-warm-50 transition-theme">
                             Wholesale Digital Catalog
                         </h2>
-                        <p className="text-sm text-secondary-700">
+                        <p className="text-sm text-secondary-700 dark:text-warm-200 transition-theme">
                             Browse our available catalog. Click 'Submit Inquiry' to get tailored shipping estimates, custom bulk prices, or customization options.
                         </p>
                     </div>
 
                     {/* Search & Filter Controls */}
-                    <div className="bg-white p-6 rounded-2xl border border-warm-200 shadow-sm flex flex-col md:flex-row gap-6 justify-between items-center">
+                    <div className="bg-white dark:bg-secondary-800/80 p-6 rounded-2xl border border-warm-200 dark:border-secondary-700/60 shadow-sm flex flex-col md:flex-row gap-6 justify-between items-center transition-theme">
                         {/* Category Filter Tabs */}
                         <div className="flex flex-wrap gap-2 justify-center">
                             {categories.map((category) => (
                                 <button
                                     key={category}
                                     onClick={() => setSelectedCategory(category)}
-                                    className={`px-5 py-2.5 rounded-full text-xs font-bold tracking-wider uppercase transition-all duration-300 ${selectedCategory === category
-                                            ? 'bg-secondary-800 text-white shadow-md'
-                                            : 'bg-warm-100 text-secondary-600 hover:bg-warm-200/60'
+                                    className={`px-5 py-2.5 rounded-full text-xs font-bold tracking-wider uppercase transition-all duration-300 cursor-pointer transition-theme ${selectedCategory === category
+                                            ? 'bg-secondary-800 dark:bg-primary-500 text-white shadow-md'
+                                            : 'bg-warm-100 dark:bg-secondary-900 text-secondary-600 dark:text-warm-300 hover:bg-warm-200/60 dark:hover:bg-secondary-800'
                                         }`}
                                 >
                                     {category}
@@ -223,9 +223,9 @@ const Home = () => {
                                 value={searchQuery}
                                 onChange={(e) => setSearchQuery(e.target.value)}
                                 placeholder="Search products or artisans..."
-                                className="w-full pl-10 pr-4 py-2.5 rounded-full border border-warm-300 text-secondary-800 text-xs focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all"
+                                className="w-full pl-10 pr-4 py-2.5 rounded-full border border-warm-300 dark:border-secondary-700 bg-white dark:bg-secondary-800 text-secondary-800 dark:text-warm-50 text-xs focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all transition-theme"
                             />
-                            <svg className="absolute left-3.5 top-3 w-4 h-4 text-secondary-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <svg className="absolute left-3.5 top-3.5 w-4 h-4 text-secondary-500 dark:text-warm-300 transition-theme" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
                             </svg>
                         </div>
@@ -251,10 +251,10 @@ const Home = () => {
                             ))}
                         </div>
                     ) : (
-                        <div className="text-center py-20 bg-white rounded-2xl border border-warm-200 space-y-3">
+                        <div className="text-center py-20 bg-white dark:bg-secondary-800/80 rounded-2xl border border-warm-200 dark:border-secondary-700/60 space-y-3 transition-theme">
                             <div className="text-4xl">🍂</div>
-                            <h3 className="font-serif text-xl font-bold text-secondary-800">No products found</h3>
-                            <p className="text-sm text-secondary-600 max-w-md mx-auto">
+                            <h3 className="font-serif text-xl font-bold text-secondary-800 dark:text-warm-100 transition-theme">No products found</h3>
+                            <p className="text-sm text-secondary-600 dark:text-warm-300 max-w-md mx-auto transition-theme">
                                 No crafts match your filter selection or search query. Try choosing another category or keyword.
                             </p>
                         </div>
@@ -264,7 +264,7 @@ const Home = () => {
 
             {/* Inquiry Count Floating Indicator */}
             {inquiriesCount > 0 && (
-                <div className="fixed bottom-6 left-6 z-50 bg-white border border-warm-200 px-4 py-2.5 rounded-full shadow-lg flex items-center gap-2.5 text-xs font-bold text-secondary-800">
+                <div className="fixed bottom-6 left-6 z-50 bg-white dark:bg-secondary-850 border border-warm-200 dark:border-secondary-700 px-4 py-2.5 rounded-full shadow-lg flex items-center gap-2.5 text-xs font-bold text-secondary-800 dark:text-warm-100 transition-theme">
                     <span className="w-2.5 h-2.5 rounded-full bg-primary-500" />
                     <span>{inquiriesCount} Inquiry Session Submitted</span>
                 </div>

@@ -1,6 +1,9 @@
 @import url('https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400..700;1,400..700&family=Inter:wght@300;400;500;600;700;800&display=swap');
 @import "tailwindcss";
 
+@custom-variant dark (&:where(.dark, .dark *));
+
+
 @theme {
   --font-serif: "Lora", serif;
   --font-sans: "Inter", sans-serif;
@@ -12,12 +15,17 @@
   --color-primary-600: hsl(12, 80%, 42%);
   --color-primary-700: hsl(10, 80%, 35%);
   --color-primary-800: hsl(8, 80%, 28%);
+  --color-primary-950: hsl(14, 75%, 10%);
   
   --color-secondary-50: hsl(140, 30%, 96%);
   --color-secondary-100: hsl(140, 30%, 90%);
   --color-secondary-600: hsl(155, 30%, 25%);
   --color-secondary-700: hsl(155, 35%, 18%);
   --color-secondary-800: hsl(155, 40%, 12%);
+  --color-secondary-750: hsl(155, 35%, 16%);
+  --color-secondary-850: hsl(155, 40%, 9%);
+  --color-secondary-900: hsl(155, 40%, 6%);
+  --color-secondary-950: hsl(155, 40%, 3%);
   
   --color-warm-50: hsl(35, 40%, 98%);
   --color-warm-100: hsl(35, 30%, 95%);
@@ -44,6 +52,11 @@
   }
 }
 
+/* Smooth transition for theme colors */
+.transition-theme {
+  transition: background-color 0.3s ease, border-color 0.3s ease, color 0.3s ease, box-shadow 0.3s ease;
+}
+
 /* Custom base styles to match our typography */
 body {
   font-family: var(--font-sans);
@@ -52,6 +65,12 @@ body {
   line-height: 1.6;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.dark body {
+  background-color: hsl(155, 35%, 8%);
+  color: hsl(35, 40%, 98%);
 }
 
 h1, h2, h3, h4, .font-display {
