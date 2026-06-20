@@ -1,4 +1,7 @@
 import React, { useState } from 'react';
+import Button from './ui/Button';
+import Input from './ui/Input';
+import Modal from './ui/Modal';
 
 const ProductCard = ({ product, onInquire }) => {
   const [showInquiryModal, setShowInquiryModal] = useState(false);
@@ -90,114 +93,85 @@ const ProductCard = ({ product, onInquire }) => {
               </div>
             </div>
 
-            <button
+            <Button
               onClick={() => setShowInquiryModal(true)}
-              className="w-full inline-flex items-center justify-center gap-2 px-4 py-3 bg-secondary-700 hover:bg-primary-500 dark:bg-secondary-600 dark:hover:bg-primary-500 text-white rounded-xl text-sm font-bold tracking-wide transition-all duration-300 shadow-md hover:shadow-lg hover:scale-[1.02] cursor-pointer"
+              variant="secondary"
+              className="w-full flex gap-2"
             >
               <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
               </svg>
               Submit Inquiry
-            </button>
+            </Button>
           </div>
         </div>
       </div>
 
-      {/* Inquiry Modal */}
-      {showInquiryModal && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-secondary-800/60 backdrop-blur-sm animate-fade-in">
-          <div className="bg-warm-50 dark:bg-secondary-900 rounded-2xl max-w-md w-full shadow-2xl border border-warm-200 dark:border-secondary-800 overflow-hidden transform transition-all duration-300 scale-100 transition-theme">
-            {/* Modal Header */}
-            <div className="bg-secondary-700 dark:bg-secondary-800 text-white p-6 flex justify-between items-center transition-theme">
-              <div>
-                <span className="text-[10px] uppercase tracking-widest text-primary-200 dark:text-primary-300 font-bold block mb-1 transition-theme">Wholesale Quote Request</span>
-                <h3 className="font-serif text-xl font-bold">{product.name}</h3>
-              </div>
-              <button
-                onClick={() => setShowInquiryModal(false)}
-                className="text-white/80 hover:text-white bg-white/10 hover:bg-white/20 p-2 rounded-full transition-colors duration-300 cursor-pointer"
-              >
-                <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-                </svg>
-              </button>
+      <Modal
+        isOpen={showInquiryModal}
+        onClose={() => setShowInquiryModal(false)}
+        title={product.name}
+        subtitle="Wholesale Quote Request"
+      >
+        {isSubmitted ? (
+          <div className="py-10 text-center space-y-4">
+            <div className="w-16 h-16 bg-primary-100 dark:bg-secondary-800 rounded-full flex items-center justify-center mx-auto text-primary-500 dark:text-primary-400 animate-bounce">
+              <svg className="w-8 h-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" />
+              </svg>
             </div>
-
-            {/* Modal Body */}
-            <div className="p-6">
-              {isSubmitted ? (
-                <div className="py-10 text-center space-y-4">
-                  <div className="w-16 h-16 bg-primary-100 rounded-full flex items-center justify-center mx-auto text-primary-500 animate-bounce">
-                    <svg className="w-8 h-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" />
-                    </svg>
-                  </div>
-                  <h4 className="font-serif text-2xl font-bold text-secondary-800 dark:text-warm-100 transition-theme">Inquiry Sent!</h4>
-                  <p className="text-sm text-secondary-600 dark:text-warm-300 transition-theme">
-                    Your wholesale catalog request was submitted to <strong>{product.artisan}</strong>. You will receive an email response soon.
-                  </p>
-                </div>
-              ) : (
-                <form onSubmit={handleSubmit} className="space-y-4">
-                  <div>
-                    <label className="block text-xs font-bold text-secondary-700 dark:text-warm-200 uppercase tracking-wider mb-1 transition-theme">Your Name</label>
-                    <input
-                      type="text"
-                      value={inquiryData.name}
-                      onChange={(e) => setInquiryData({ ...inquiryData, name: e.target.value })}
-                      placeholder="e.g., Jane Smith"
-                      className="w-full px-4 py-2.5 rounded-xl border border-warm-300 dark:border-secondary-750 bg-white dark:bg-secondary-800 text-secondary-800 dark:text-warm-50 text-sm focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all transition-theme"
-                      required
-                    />
-                  </div>
-
-                  <div>
-                    <label className="block text-xs font-bold text-secondary-700 dark:text-warm-200 uppercase tracking-wider mb-1 transition-theme">Business Email</label>
-                    <input
-                      type="email"
-                      value={inquiryData.email}
-                      onChange={(e) => setInquiryData({ ...inquiryData, email: e.target.value })}
-                      placeholder="e.g., buyer@company.com"
-                      className="w-full px-4 py-2.5 rounded-xl border border-warm-300 dark:border-secondary-750 bg-white dark:bg-secondary-800 text-secondary-800 dark:text-warm-50 text-sm focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all transition-theme"
-                      required
-                    />
-                  </div>
-
-                  <div>
-                    <label className="block text-xs font-bold text-secondary-700 dark:text-warm-200 uppercase tracking-wider mb-1 transition-theme">Inquiry Quantity (Units)</label>
-                    <input
-                      type="number"
-                      min={product.minOrder}
-                      value={inquiryData.quantity}
-                      onChange={(e) => setInquiryData({ ...inquiryData, quantity: parseInt(e.target.value) || product.minOrder })}
-                      className="w-full px-4 py-2.5 rounded-xl border border-warm-300 dark:border-secondary-750 bg-white dark:bg-secondary-800 text-secondary-800 dark:text-warm-50 text-sm focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all transition-theme"
-                      required
-                    />
-                  </div>
-
-                  <div>
-                    <label className="block text-xs font-bold text-secondary-700 dark:text-warm-200 uppercase tracking-wider mb-1 transition-theme">Message</label>
-                    <textarea
-                      rows={3}
-                      value={inquiryData.message}
-                      onChange={(e) => setInquiryData({ ...inquiryData, message: e.target.value })}
-                      className="w-full px-4 py-2.5 rounded-xl border border-warm-300 dark:border-secondary-750 bg-white dark:bg-secondary-800 text-secondary-800 dark:text-warm-50 text-sm focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all resize-none transition-theme"
-                      required
-                    />
-                  </div>
-
-                  <button
-                    type="submit"
-                    className="w-full py-3 mt-2 bg-primary-500 hover:bg-primary-600 text-white rounded-xl text-sm font-bold tracking-wide transition-all duration-300 shadow-md"
-                  >
-                    Submit Inquire Form
-                  </button>
-                </form>
-              )}
-            </div>
+            <h4 className="font-serif text-2xl font-bold text-secondary-800 dark:text-warm-100 transition-theme">Inquiry Sent!</h4>
+            <p className="text-sm text-secondary-600 dark:text-warm-300 transition-theme">
+              Your wholesale catalog request was submitted to <strong>{product.artisan}</strong>. You will receive an email response soon.
+            </p>
           </div>
-        </div>
-      )}
+        ) : (
+          <form onSubmit={handleSubmit} className="space-y-4">
+            <Input
+              label="Your Name"
+              type="text"
+              value={inquiryData.name}
+              onChange={(e) => setInquiryData({ ...inquiryData, name: e.target.value })}
+              placeholder="e.g., Jane Smith"
+              required
+            />
+
+            <Input
+              label="Business Email"
+              type="email"
+              value={inquiryData.email}
+              onChange={(e) => setInquiryData({ ...inquiryData, email: e.target.value })}
+              placeholder="e.g., buyer@company.com"
+              required
+            />
+
+            <Input
+              label="Inquiry Quantity (Units)"
+              type="number"
+              min={product.minOrder}
+              value={inquiryData.quantity}
+              onChange={(e) => setInquiryData({ ...inquiryData, quantity: parseInt(e.target.value) || product.minOrder })}
+              required
+            />
+
+            <Input
+              label="Message"
+              textarea
+              rows={3}
+              value={inquiryData.message}
+              onChange={(e) => setInquiryData({ ...inquiryData, message: e.target.value })}
+              required
+            />
+
+            <Button
+              type="submit"
+              className="w-full mt-2"
+            >
+              Submit Inquire Form
+            </Button>
+          </form>
+        )}
+      </Modal>
     </>
   );
 };

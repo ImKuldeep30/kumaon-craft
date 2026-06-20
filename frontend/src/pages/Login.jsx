@@ -2,6 +2,9 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
+import Button from '../components/ui/Button';
+import Input from '../components/ui/Input';
+import Loader from '../components/ui/Loader';
 
 const Login = () => {
   const [role, setRole] = useState('artisan'); // 'artisan' or 'buyer'
@@ -68,28 +71,28 @@ const Login = () => {
 
           {/* Simple Tab Role Selector */}
           <div className="flex border-b border-warm-200 dark:border-secondary-700 transition-theme">
-            <button
-              type="button"
+            <Button
+              variant="ghost"
               onClick={() => handleToggleRole('artisan')}
-              className={`flex-1 pb-3 text-sm font-bold uppercase tracking-wider transition-all border-b-2 cursor-pointer transition-theme ${
+              className={`flex-1 !rounded-none !bg-transparent border-b-2 !pb-3 !pt-0 !px-0 text-sm font-bold uppercase tracking-wider active:scale-100 transition-all ${
                 role === 'artisan'
                   ? 'border-primary-500 text-primary-600 dark:text-primary-400'
                   : 'border-transparent text-secondary-600 dark:text-warm-300 hover:text-secondary-800 dark:hover:text-warm-100'
               }`}
             >
               Artisan / Admin
-            </button>
-            <button
-              type="button"
+            </Button>
+            <Button
+              variant="ghost"
               onClick={() => handleToggleRole('buyer')}
-              className={`flex-1 pb-3 text-sm font-bold uppercase tracking-wider transition-all border-b-2 cursor-pointer transition-theme ${
+              className={`flex-1 !rounded-none !bg-transparent border-b-2 !pb-3 !pt-0 !px-0 text-sm font-bold uppercase tracking-wider active:scale-100 transition-all ${
                 role === 'buyer'
                   ? 'border-primary-500 text-primary-600 dark:text-primary-400'
                   : 'border-transparent text-secondary-600 dark:text-warm-300 hover:text-secondary-800 dark:hover:text-warm-100'
               }`}
             >
               Wholesale Buyer
-            </button>
+            </Button>
           </div>
 
           {/* Feedback messages */}
@@ -108,50 +111,48 @@ const Login = () => {
           {/* Login Form */}
           {!success && (
             <form onSubmit={handleSubmit} className="space-y-6">
-              <div>
-                <label className="block text-xs font-semibold text-secondary-700 dark:text-warm-200 uppercase tracking-wider mb-2 transition-theme">
-                  {role === 'artisan' ? 'Artisan Email Address' : 'Business Email Address'}
-                </label>
-                <input
-                  type="email"
-                  name="email"
-                  value={credentials.email}
-                  onChange={handleInputChange}
-                  placeholder={role === 'artisan' ? 'artisan@kumaon.org' : 'buyer@kumaon.org'}
-                  className="w-full px-4 py-3 rounded-lg border border-warm-300 dark:border-secondary-700 bg-white dark:bg-secondary-800 text-secondary-800 dark:text-warm-50 text-base focus:outline-none focus:border-primary-500 transition-colors transition-theme"
-                  required
-                />
-              </div>
+              <Input
+                label={role === 'artisan' ? 'Artisan Email Address' : 'Business Email Address'}
+                type="email"
+                name="email"
+                value={credentials.email}
+                onChange={handleInputChange}
+                placeholder={role === 'artisan' ? 'artisan@kumaon.org' : 'buyer@kumaon.org'}
+                required
+              />
 
-              <div>
-                <div className="flex justify-between items-center mb-2">
-                  <label className="block text-xs font-semibold text-secondary-700 dark:text-warm-200 uppercase tracking-wider transition-theme">
-                    Password
-                  </label>
-                  <span className="text-xs text-primary-600 dark:text-primary-400 hover:underline cursor-pointer transition-theme">Forgot password?</span>
-                </div>
-                <input
-                  type="password"
-                  name="password"
-                  value={credentials.password}
-                  onChange={handleInputChange}
-                  placeholder="••••••••"
-                  className="w-full px-4 py-3 rounded-lg border border-warm-300 dark:border-secondary-700 bg-white dark:bg-secondary-800 text-secondary-800 dark:text-warm-50 text-base focus:outline-none focus:border-primary-500 transition-colors transition-theme"
-                  required
-                />
-              </div>
+              <Input
+                label={
+                  <span className="flex justify-between items-center w-full">
+                    <span>Password</span>
+                    <span className="text-xs text-primary-600 dark:text-primary-400 hover:underline cursor-pointer normal-case font-normal transition-theme">
+                      Forgot password?
+                    </span>
+                  </span>
+                }
+                type="password"
+                name="password"
+                value={credentials.password}
+                onChange={handleInputChange}
+                placeholder="••••••••"
+                required
+              />
 
-              <button
+              <Button
                 type="submit"
                 disabled={isLoading}
-                className="w-full py-3.5 mt-2 bg-primary-500 hover:bg-primary-600 disabled:bg-primary-300 text-white rounded-lg text-base font-bold tracking-wide transition-colors flex items-center justify-center gap-2 shadow-sm"
+                size="lg"
+                className="w-full mt-2"
               >
                 {isLoading ? (
-                  <span>Checking...</span>
+                  <div className="flex items-center gap-2">
+                    <Loader size="sm" color="white" />
+                    <span>Checking...</span>
+                  </div>
                 ) : (
                   <span>Log In</span>
                 )}
-              </button>
+              </Button>
             </form>
           )}
 

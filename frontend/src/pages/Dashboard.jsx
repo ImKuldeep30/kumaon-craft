@@ -2,6 +2,10 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
+import Button from '../components/ui/Button';
+import Input from '../components/ui/Input';
+import Modal from '../components/ui/Modal';
+import Toast from '../components/ui/Toast';
 
 const MOCK_INQUIRIES = [
   {
@@ -120,21 +124,22 @@ const Dashboard = () => {
               </p>
             </div>
 
-            <button
+            <Button
               onClick={handleLogout}
-              className="px-5 py-2.5 bg-white/10 hover:bg-white/20 text-white border border-white/30 hover:border-white/60 rounded-xl text-sm font-semibold tracking-wide transition-all duration-300 relative z-10"
+              variant="outline"
+              className="bg-white/10 hover:bg-white/20 text-white border-white/30 hover:border-white/60 relative z-10"
             >
               Sign Out
-            </button>
+            </Button>
           </div>
 
           {/* Toast Notification */}
-          {notification && (
-            <div className="bg-secondary-800 text-white px-6 py-4 rounded-xl shadow-xl border-l-4 border-primary-500 animate-fade-in flex items-center gap-3">
-              <span className="text-primary-500 text-base">✓</span>
-              <p className="text-xs sm:text-sm font-semibold">{notification}</p>
-            </div>
-          )}
+          <Toast
+            message={notification}
+            onClose={() => setNotification('')}
+            fixed={false}
+            className="animate-fade-in"
+          />
 
           {/* METRIC CARDS */}
           {user.role === 'artisan' ? (
@@ -225,20 +230,21 @@ const Dashboard = () => {
                         {user.role === 'artisan' && (
                           <td className="px-6 py-4 text-right space-x-2">
                             {inq.status === 'Pending Review' && (
-                              <button
+                              <Button
                                 onClick={() => handleUpdateStatus(inq.id, 'Quote Sent')}
-                                className="px-3 py-1.5 bg-primary-500 hover:bg-primary-600 text-white rounded-lg text-xs font-bold transition-all cursor-pointer"
+                                size="sm"
                               >
                                 Send Quote
-                              </button>
+                              </Button>
                             )}
                             {inq.status === 'Quote Sent' && (
-                              <button
+                              <Button
                                 onClick={() => handleUpdateStatus(inq.id, 'In Discussion')}
-                                className="px-3 py-1.5 bg-secondary-700 hover:bg-secondary-800 text-white rounded-lg text-xs font-bold transition-all cursor-pointer"
+                                variant="secondary"
+                                size="sm"
                               >
                                 Discuss
-                              </button>
+                              </Button>
                             )}
                             {inq.status === 'In Discussion' && (
                               <span className="text-xs text-secondary-600/60 dark:text-warm-300/40 font-semibold italic transition-theme">Negotiating...</span>
@@ -258,12 +264,12 @@ const Dashboard = () => {
                 <div className="bg-white dark:bg-secondary-800/80 rounded-3xl border border-warm-200 dark:border-secondary-700/60 shadow-sm overflow-hidden p-6 space-y-6 transition-theme">
                   <div className="flex justify-between items-center">
                     <h3 className="font-serif text-lg font-bold text-secondary-800 dark:text-warm-100 transition-theme">Your Listed Crafts</h3>
-                    <button
+                    <Button
                       onClick={() => setShowAddForm(true)}
-                      className="w-8 h-8 rounded-full bg-primary-500 hover:bg-primary-600 text-white flex items-center justify-center font-bold text-lg shadow-md hover:scale-105 transition-all cursor-pointer"
+                      className="w-8 h-8 rounded-full flex items-center justify-center text-lg p-0"
                     >
                       +
-                    </button>
+                    </Button>
                   </div>
 
                   <div className="space-y-4">
@@ -274,12 +280,13 @@ const Dashboard = () => {
                           <h4 className="font-serif font-bold text-secondary-800 dark:text-warm-100 text-sm line-clamp-1 transition-theme">{p.name}</h4>
                           <div className="text-xs text-secondary-600 dark:text-warm-200 font-semibold transition-theme">{p.price}</div>
                         </div>
-                        <button
+                        <Button
                           onClick={() => handleDeleteProduct(p.id)}
-                          className="text-red-500 hover:text-red-700 p-1.5 hover:bg-red-50 dark:hover:bg-secondary-800 rounded-lg transition-all cursor-pointer"
+                          variant="ghost"
+                          className="text-red-500 hover:text-red-700 p-1.5 hover:bg-red-50 dark:hover:bg-secondary-800 rounded-lg"
                         >
                           🗑️
-                        </button>
+                        </Button>
                       </div>
                     ))}
                   </div>
@@ -300,78 +307,60 @@ const Dashboard = () => {
 
           {/* ADD PRODUCT MODAL / DIALOG */}
           {showAddForm && (
-            <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-secondary-800/60 backdrop-blur-sm animate-fade-in">
-              <div className="bg-warm-50 dark:bg-secondary-900 rounded-2xl max-w-md w-full shadow-2xl border border-warm-200 dark:border-secondary-800 overflow-hidden transition-theme">
-                <div className="bg-secondary-700 dark:bg-secondary-800 text-white p-6 flex justify-between items-center transition-theme">
-                  <h3 className="font-serif text-xl font-bold">List New Heritage Craft</h3>
-                  <button
-                    onClick={() => setShowAddForm(false)}
-                    className="text-white/80 hover:text-white bg-white/10 hover:bg-white/20 p-2 rounded-full transition-all cursor-pointer"
-                  >
-                    ✕
-                  </button>
-                </div>
+        <Modal
+          isOpen={showAddForm}
+          onClose={() => setShowAddForm(false)}
+          title="List New Heritage Craft"
+          subtitle="Artisan / Guild Admin Panel"
+        >
+          <form onSubmit={handleAddProduct} className="space-y-4">
+            <Input
+              label="Product Name"
+              type="text"
+              value={newProduct.name}
+              onChange={(e) => setNewProduct({ ...newProduct, name: e.target.value })}
+              placeholder="e.g., Handpainted Aipan Puja Box"
+              required
+            />
 
-                <form onSubmit={handleAddProduct} className="p-6 space-y-4">
-                  <div>
-                    <label className="block text-xs font-bold text-secondary-700 dark:text-warm-200 uppercase tracking-wider mb-1 transition-theme">Product Name</label>
-                    <input
-                      type="text"
-                      value={newProduct.name}
-                      onChange={(e) => setNewProduct({ ...newProduct, name: e.target.value })}
-                      placeholder="e.g., Handpainted Aipan Puja Box"
-                      className="w-full px-4 py-2.5 rounded-xl border border-warm-300 dark:border-secondary-700 bg-white dark:bg-secondary-800 text-secondary-800 dark:text-warm-50 text-sm focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all transition-theme"
-                      required
-                    />
-                  </div>
+            <Input
+              label="Category"
+              select
+              value={newProduct.category}
+              onChange={(e) => setNewProduct({ ...newProduct, category: e.target.value })}
+            >
+              <option value="Handloom">Handloom</option>
+              <option value="Copperware">Copperware</option>
+              <option value="Woodcraft">Woodcraft</option>
+              <option value="Aipan Art">Aipan Art</option>
+            </Input>
 
-                  <div>
-                    <label className="block text-xs font-bold text-secondary-700 dark:text-warm-200 uppercase tracking-wider mb-1 transition-theme">Category</label>
-                    <select
-                      value={newProduct.category}
-                      onChange={(e) => setNewProduct({ ...newProduct, category: e.target.value })}
-                      className="w-full px-4 py-2.5 rounded-xl border border-warm-300 dark:border-secondary-700 bg-white dark:bg-secondary-800 text-secondary-800 dark:text-warm-50 text-sm focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all transition-theme"
-                    >
-                      <option value="Handloom">Handloom</option>
-                      <option value="Copperware">Copperware</option>
-                      <option value="Woodcraft">Woodcraft</option>
-                      <option value="Aipan Art">Aipan Art</option>
-                    </select>
-                  </div>
+            <Input
+              label="Wholesale Pricing"
+              type="text"
+              value={newProduct.price}
+              onChange={(e) => setNewProduct({ ...newProduct, price: e.target.value })}
+              placeholder="e.g., ₹2,200 / Unit"
+              required
+            />
 
-                  <div>
-                    <label className="block text-xs font-bold text-secondary-700 dark:text-warm-200 uppercase tracking-wider mb-1 transition-theme">Wholesale Pricing</label>
-                    <input
-                      type="text"
-                      value={newProduct.price}
-                      onChange={(e) => setNewProduct({ ...newProduct, price: e.target.value })}
-                      placeholder="e.g., ₹2,200 / Unit"
-                      className="w-full px-4 py-2.5 rounded-xl border border-warm-300 dark:border-secondary-700 bg-white dark:bg-secondary-800 text-secondary-800 dark:text-warm-50 text-sm focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all transition-theme"
-                      required
-                    />
-                  </div>
+            <Input
+              label="Minimum Order Qty"
+              type="number"
+              min={1}
+              value={newProduct.minOrder}
+              onChange={(e) => setNewProduct({ ...newProduct, minOrder: parseInt(e.target.value) || 10 })}
+              required
+            />
 
-                  <div>
-                    <label className="block text-xs font-bold text-secondary-700 dark:text-warm-200 uppercase tracking-wider mb-1 transition-theme">Minimum Order Qty</label>
-                    <input
-                      type="number"
-                      min={1}
-                      value={newProduct.minOrder}
-                      onChange={(e) => setNewProduct({ ...newProduct, minOrder: parseInt(e.target.value) || 10 })}
-                      className="w-full px-4 py-2.5 rounded-xl border border-warm-300 dark:border-secondary-700 bg-white dark:bg-secondary-800 text-secondary-800 dark:text-warm-50 text-sm focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all transition-theme"
-                      required
-                    />
-                  </div>
-
-                  <button
-                    type="submit"
-                    className="w-full py-3 mt-2 bg-primary-500 hover:bg-primary-600 text-white rounded-xl text-sm font-bold tracking-wide transition-all shadow-md"
-                  >
-                    Publish Listing
-                  </button>
-                </form>
-              </div>
-            </div>
+            <Button
+              type="submit"
+              className="w-full mt-2"
+            >
+              Publish Listing
+            </Button>
+          </form>
+        </Modal>
           )}
 
         </div>

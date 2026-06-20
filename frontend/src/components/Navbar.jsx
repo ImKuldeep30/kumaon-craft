@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
+import Button from './ui/Button';
 
 const Navbar = () => {
     const [isOpen, setIsOpen] = useState(false);
@@ -94,12 +95,12 @@ const Navbar = () => {
                             )}
                         </button>
 
-                        <Link
+                        <Button
                             to="/login"
-                            className="inline-flex items-center justify-center px-5 py-2.5 rounded-full text-sm font-semibold tracking-wide text-white bg-primary-500 hover:bg-primary-600 active:scale-95 transition-all duration-300 shadow-md hover:shadow-lg hover:shadow-primary-500/20"
+                            className="rounded-full"
                         >
                             Login
-                        </Link>
+                        </Button>
                     </div>
 
                     {/* Mobile controls */}
@@ -160,13 +161,13 @@ const Navbar = () => {
                         </Link>
                     ))}
                     <div className="pt-4 border-t border-warm-200/60 dark:border-secondary-800/60">
-                        <Link
+                        <Button
                             to="/login"
                             onClick={() => setIsOpen(false)}
-                            className="block w-full text-center px-4 py-3 rounded-xl text-base font-semibold tracking-wide text-white bg-primary-500 hover:bg-primary-600 transition-all duration-300 shadow-md"
+                            className="w-full text-center py-3 text-base"
                         >
                             Login
-                        </Link>
+                        </Button>
                     </div>
                 </div>
             </div>
