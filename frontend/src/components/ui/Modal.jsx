@@ -1,5 +1,16 @@
 import React, { useEffect } from 'react';
 
+/**
+ * Modal Component
+ * 
+ * @param {Object} props - The component props.
+ * @param {boolean} props.isOpen - Whether the modal is visible.
+ * @param {function} props.onClose - Close handler function.
+ * @param {string} props.title - Title text of the modal.
+ * @param {string} [props.subtitle] - Optional subtitle text of the modal.
+ * @param {React.ReactNode} props.children - Modal content elements.
+ * @param {string} [props.className=''] - Extra classes for the modal container div.
+ */
 const Modal = ({
   isOpen,
   onClose,

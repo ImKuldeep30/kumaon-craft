@@ -1,5 +1,16 @@
 import React, { useEffect } from 'react';
 
+/**
+ * Toast Component
+ * 
+ * @param {Object} props - The component props.
+ * @param {string} props.message - The message text to display.
+ * @param {function} [props.onClose] - Close handler callback after toast expires.
+ * @param {number} [props.duration=4000] - Duration in milliseconds to show the toast before calling onClose.
+ * @param {'success' | 'error'} [props.type='success'] - The visual style type of the toast.
+ * @param {boolean} [props.fixed=true] - Whether the toast is fixed to bottom-right or rendered inline.
+ * @param {string} [props.className=''] - Extra classes for the toast wrapper div.
+ */
 const Toast = ({
   message,
   onClose,

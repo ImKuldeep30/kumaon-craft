@@ -1,6 +1,20 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 
+/**
+ * Button Component
+ * 
+ * @param {Object} props - The component props.
+ * @param {React.ReactNode} props.children - The content to render inside the button.
+ * @param {'primary' | 'secondary' | 'outline' | 'danger' | 'ghost'} [props.variant='primary'] - The visual style of the button.
+ * @param {'sm' | 'md' | 'lg'} [props.size='md'] - The size of the button.
+ * @param {string} [props.className=''] - Additional CSS classes to apply.
+ * @param {function} [props.onClick] - Click handler function.
+ * @param {'button' | 'submit' | 'reset'} [props.type='button'] - The HTML button type.
+ * @param {boolean} [props.disabled=false] - Whether the button is disabled.
+ * @param {string} [props.to] - If provided, renders as a react-router Link.
+ * @param {string} [props.href] - If provided, renders as a standard anchor tag.
+ */
 const Button = ({
   children,
   variant = 'primary',

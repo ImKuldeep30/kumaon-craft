@@ -1,5 +1,23 @@
 import React from 'react';
 
+/**
+ * Input Component
+ * 
+ * @param {Object} props - The component props.
+ * @param {React.ReactNode|string} [props.label] - Label for the input field.
+ * @param {string} [props.type='text'] - Type of input (e.g. 'text', 'email', 'number', 'password').
+ * @param {string|number} props.value - The current value of the input.
+ * @param {function} props.onChange - Change handler function.
+ * @param {string} [props.placeholder] - Placeholder text for input.
+ * @param {string} [props.className=''] - Extra classes for the wrapping div.
+ * @param {string} [props.inputClassName=''] - Extra classes to apply to the input element itself.
+ * @param {boolean} [props.required=false] - If input is required in forms.
+ * @param {boolean} [props.textarea=false] - Renders as textarea if true.
+ * @param {boolean} [props.select=false] - Renders as select dropdown if true.
+ * @param {number} [props.rows=3] - Rows for textarea if textarea is true.
+ * @param {string} [props.error] - Error message to display under the input.
+ * @param {React.ReactNode} [props.children] - Children elements for select dropdown options.
+ */
 const Input = ({
   label,
   type = 'text',

@@ -1,5 +1,13 @@
 import React from 'react';
 
+/**
+ * Loader Component
+ * 
+ * @param {Object} props - The component props.
+ * @param {'sm' | 'md' | 'lg'} [props.size='md'] - The size of the spinner loader.
+ * @param {string} [props.className=''] - Extra CSS classes to apply to the loader.
+ * @param {'primary' | 'white' | 'secondary'} [props.color='primary'] - The visual color scheme of the spinner.
+ */
 const Loader = ({
   size = 'md', // 'sm' | 'md' | 'lg'
   className = '',
