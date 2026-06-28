@@ -57,3 +57,50 @@ We are actively developing the next stages of the Kumaon Craft Connect platform.
 
 ### 4. Interactive Heritage Map
 - **Artisan Stories:** An interactive map highlighting exact Himalayan villages, artisan profiles, video tours of handloom setups, and regional stories behind specific craft techniques.
+
+---
+
+## 🛠️ How to Run Backend Locally
+
+To run the Node.js Express backend service on your local machine:
+
+### Prerequisites
+- Node.js (v18+)
+- MongoDB (Running locally or a MongoDB Atlas Cluster connection URI)
+
+### Setup Steps
+1. Navigate to the `backend` folder:
+   ```bash
+   cd backend
+   ```
+2. Install the backend dependencies:
+   ```bash
+   npm install
+   ```
+3. Configure Environment Variables:
+   - Create a `.env` file inside the `backend` directory (it is already ignored by Git).
+   - Copy content from `.env.example`:
+     ```bash
+     cp .env.example .env
+     ```
+   - Open `.env` and configure your `MONGO_URI` (insert your MongoDB Atlas connection string or local MongoDB connection URI) and optional `PORT`.
+
+4. Seed the Database:
+   - Populates your MongoDB collection with default products and test inquiries.
+   - Run the seed script:
+     ```bash
+     npm run seed
+     ```
+
+5. Run the Server:
+   - **For Development (hot-reloads on save):**
+     ```bash
+     npm run dev
+     ```
+   - **For Production:**
+     ```bash
+     npm start
+     ```
+
+The backend server will run on [http://localhost:5000](http://localhost:5000) by default. You can test the main server status by opening [http://localhost:5000/](http://localhost:5000/) in your browser.
+

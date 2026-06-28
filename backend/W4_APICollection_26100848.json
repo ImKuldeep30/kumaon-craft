@@ -1,0 +1,651 @@
+{
+  "info": {
+    "_postman_id": "c3fbda59-6721-4f1b-bb48-8dfca38495a6",
+    "name": "Kumaon Craft Connect API",
+    "description": "Postman Collection for Kumaon Craft Connect API endpoints covering CRUD on Products and Inquiries.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Welcome Endpoint",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:5000/",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "5000",
+          "path": [
+            ""
+          ]
+        }
+      },
+      "response": [
+        {
+          "name": "Success Response",
+          "originalRequest": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:5000/",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "5000",
+              "path": [
+                ""
+              ]
+            }
+          },
+          "status": "OK",
+          "code": 200,
+          "_postman_previewlanguage": "json",
+          "header": [
+            {
+              "key": "Content-Type",
+              "value": "application/json"
+            }
+          ],
+          "cookie": [],
+          "body": "{\n  \"success\": true,\n  \"message\": \"Welcome to Kumaon Craft Connect API\"\n}"
+        }
+      ]
+    },
+    {
+      "name": "Get Products (with Search & Category Filters)",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:5000/api/products?category=Handloom&search=Panchachuli",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "5000",
+          "path": [
+            "api",
+            "products"
+          ],
+          "query": [
+            {
+              "key": "category",
+              "value": "Handloom"
+            },
+            {
+              "key": "search",
+              "value": "Panchachuli"
+            }
+          ]
+        }
+      },
+      "response": [
+        {
+          "name": "Success Response",
+          "originalRequest": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:5000/api/products?category=Handloom&search=Panchachuli",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "5000",
+              "path": [
+                "api",
+                "products"
+              ],
+              "query": [
+                {
+                  "key": "category",
+                  "value": "Handloom"
+                },
+                {
+                  "key": "search",
+                  "value": "Panchachuli"
+                }
+              ]
+            }
+          },
+          "status": "OK",
+          "code": 200,
+          "_postman_previewlanguage": "json",
+          "header": [
+            {
+              "key": "Content-Type",
+              "value": "application/json"
+            }
+          ],
+          "cookie": [],
+          "body": "{\n  \"success\": true,\n  \"count\": 1,\n  \"data\": [\n    {\n      \"_id\": \"667ec340a6b7d15a31a90c10\",\n      \"name\": \"Panchachuli Handspun Tweed Woolen Fabric\",\n      \"category\": \"Handloom\",\n      \"price\": \"₹2,400 / Meter\",\n      \"minOrder\": 15,\n      \"image\": \"https://images.unsplash.com/photo-1544816155-12df9643f363?q=80&w=600&auto=format&fit=crop\",\n      \"artisan\": \"Bhagwati Devi, Munsyari\",\n      \"description\": \"Traditionally spun and hand-woven pure sheep wool fabric, colored with organic wild herb dyes. Ideal for premium winter coats and jackets.\",\n      \"createdAt\": \"2026-06-28T07:05:00.000Z\"\n    }\n  ]\n}"
+        }
+      ]
+    },
+    {
+      "name": "Get Single Product",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:5000/api/products/667ec340a6b7d15a31a90c10",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "5000",
+          "path": [
+            "api",
+            "products",
+            "667ec340a6b7d15a31a90c10"
+          ]
+        }
+      },
+      "response": [
+        {
+          "name": "Success Response",
+          "originalRequest": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:5000/api/products/667ec340a6b7d15a31a90c10",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "5000",
+              "path": [
+                "api",
+                "products",
+                "667ec340a6b7d15a31a90c10"
+              ]
+            }
+          },
+          "status": "OK",
+          "code": 200,
+          "_postman_previewlanguage": "json",
+          "header": [
+            {
+              "key": "Content-Type",
+              "value": "application/json"
+            }
+          ],
+          "cookie": [],
+          "body": "{\n  \"success\": true,\n  \"data\": {\n    \"_id\": \"667ec340a6b7d15a31a90c10\",\n    \"name\": \"Panchachuli Handspun Tweed Woolen Fabric\",\n    \"category\": \"Handloom\",\n    \"price\": \"₹2,400 / Meter\",\n    \"minOrder\": 15,\n    \"image\": \"https://images.unsplash.com/photo-1544816155-12df9643f363?q=80&w=600&auto=format&fit=crop\",\n    \"artisan\": \"Bhagwati Devi, Munsyari\",\n    \"description\": \"Traditionally spun and hand-woven pure sheep wool fabric, colored with organic wild herb dyes. Ideal for premium winter coats and jackets.\",\n    \"createdAt\": \"2026-06-28T07:05:00.000Z\"\n  }\n}"
+        },
+        {
+          "name": "Not Found Response",
+          "originalRequest": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:5000/api/products/667ec340a6b7d15a31a90c99",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "5000",
+              "path": [
+                "api",
+                "products",
+                "667ec340a6b7d15a31a90c99"
+              ]
+            }
+          },
+          "status": "Not Found",
+          "code": 404,
+          "_postman_previewlanguage": "json",
+          "header": [
+            {
+              "key": "Content-Type",
+              "value": "application/json"
+            }
+          ],
+          "cookie": [],
+          "body": "{\n  \"success\": false,\n  \"message\": \"Product not found with id: 667ec340a6b7d15a31a90c99\"\n}"
+        }
+      ]
+    },
+    {
+      "name": "Create Product",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"name\": \"Almora Traditional Tweed Shawl\",\n  \"category\": \"Handloom\",\n  \"price\": \"₹3,500 / Piece\",\n  \"minOrder\": 10,\n  \"image\": \"https://images.unsplash.com/photo-1606744824163-985d376605aa?q=80&w=600&auto=format&fit=crop\",\n  \"artisan\": \"Kavita Devi, Almora\",\n  \"description\": \"A hand-woven traditional woolen shawl decorated with organic border stripes.\"\n}"
+        },
+        "url": {
+          "raw": "http://localhost:5000/api/products",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "5000",
+          "path": [
+            "api",
+            "products"
+          ]
+        }
+      },
+      "response": [
+        {
+          "name": "Created Response",
+          "originalRequest": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Almora Traditional Tweed Shawl\",\n  \"category\": \"Handloom\",\n  \"price\": \"₹3,500 / Piece\",\n  \"minOrder\": 10,\n  \"image\": \"https://images.unsplash.com/photo-1606744824163-985d376605aa?q=80&w=600&auto=format&fit=crop\",\n  \"artisan\": \"Kavita Devi, Almora\",\n  \"description\": \"A hand-woven traditional woolen shawl decorated with organic border stripes.\"\n}"
+            },
+            "url": {
+              "raw": "http://localhost:5000/api/products",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "5000",
+              "path": [
+                "api",
+                "products"
+              ]
+            }
+          },
+          "status": "Created",
+          "code": 201,
+          "_postman_previewlanguage": "json",
+          "header": [
+            {
+              "key": "Content-Type",
+              "value": "application/json"
+            }
+          ],
+          "cookie": [],
+          "body": "{\n  \"success\": true,\n  \"data\": {\n    \"_id\": \"667ec340a6b7d15a31a90c88\",\n    \"name\": \"Almora Traditional Tweed Shawl\",\n    \"category\": \"Handloom\",\n    \"price\": \"₹3,500 / Piece\",\n    \"minOrder\": 10,\n    \"image\": \"https://images.unsplash.com/photo-1606744824163-985d376605aa?q=80&w=600&auto=format&fit=crop\",\n    \"artisan\": \"Kavita Devi, Almora\",\n    \"description\": \"A hand-woven traditional woolen shawl decorated with organic border stripes.\",\n    \"createdAt\": \"2026-06-28T07:07:22.000Z\"\n  }\n}"
+        }
+      ]
+    },
+    {
+      "name": "Update Product",
+      "request": {
+        "method": "PUT",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"price\": \"₹2,600 / Meter\",\n  \"minOrder\": 18\n}"
+        },
+        "url": {
+          "raw": "http://localhost:5000/api/products/667ec340a6b7d15a31a90c10",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "5000",
+          "path": [
+            "api",
+            "products",
+            "667ec340a6b7d15a31a90c10"
+          ]
+        }
+      },
+      "response": [
+        {
+          "name": "Success Response",
+          "originalRequest": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"price\": \"₹2,600 / Meter\",\n  \"minOrder\": 18\n}"
+            },
+            "url": {
+              "raw": "http://localhost:5000/api/products/667ec340a6b7d15a31a90c10",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "5000",
+              "path": [
+                "api",
+                "products",
+                "667ec340a6b7d15a31a90c10"
+              ]
+            }
+          },
+          "status": "OK",
+          "code": 200,
+          "_postman_previewlanguage": "json",
+          "header": [
+            {
+              "key": "Content-Type",
+              "value": "application/json"
+            }
+          ],
+          "cookie": [],
+          "body": "{\n  \"success\": true,\n  \"data\": {\n    \"_id\": \"667ec340a6b7d15a31a90c10\",\n    \"name\": \"Panchachuli Handspun Tweed Woolen Fabric\",\n    \"category\": \"Handloom\",\n    \"price\": \"₹2,600 / Meter\",\n    \"minOrder\": 18,\n    \"image\": \"https://images.unsplash.com/photo-1544816155-12df9643f363?q=80&w=600&auto=format&fit=crop\",\n    \"artisan\": \"Bhagwati Devi, Munsyari\",\n    \"description\": \"Traditionally spun and hand-woven pure sheep wool fabric, colored with organic wild herb dyes. Ideal for premium winter coats and jackets.\",\n    \"createdAt\": \"2026-06-28T07:05:00.000Z\"\n  }\n}"
+        }
+      ]
+    },
+    {
+      "name": "Delete Product",
+      "request": {
+        "method": "DELETE",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:5000/api/products/667ec340a6b7d15a31a90c88",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "5000",
+          "path": [
+            "api",
+            "products",
+            "667ec340a6b7d15a31a90c88"
+          ]
+        }
+      },
+      "response": [
+        {
+          "name": "Success Response",
+          "originalRequest": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:5000/api/products/667ec340a6b7d15a31a90c88",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "5000",
+              "path": [
+                "api",
+                "products",
+                "667ec340a6b7d15a31a90c88"
+              ]
+            }
+          },
+          "status": "OK",
+          "code": 200,
+          "_postman_previewlanguage": "json",
+          "header": [
+            {
+              "key": "Content-Type",
+              "value": "application/json"
+            }
+          ],
+          "cookie": [],
+          "body": "{\n  \"success\": true,\n  \"message\": \"Product listing successfully removed\"\n}"
+        }
+      ]
+    },
+    {
+      "name": "Get Inquiries",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:5000/api/inquiries",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "5000",
+          "path": [
+            "api",
+            "inquiries"
+          ]
+        }
+      },
+      "response": [
+        {
+          "name": "Success Response",
+          "originalRequest": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:5000/api/inquiries",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "5000",
+              "path": [
+                "api",
+                "inquiries"
+              ]
+            }
+          },
+          "status": "OK",
+          "code": 200,
+          "_postman_previewlanguage": "json",
+          "header": [
+            {
+              "key": "Content-Type",
+              "value": "application/json"
+            }
+          ],
+          "cookie": [],
+          "body": "{\n  \"success\": true,\n  \"count\": 1,\n  \"data\": [\n    {\n      \"_id\": \"667ec340a6b7d15a31a90d15\",\n      \"buyerName\": \"FabIndia Sourcing Dept\",\n      \"buyerEmail\": \"procurement@fabindia.com\",\n      \"productName\": \"Panchachuli Handspun Tweed Woolen Fabric\",\n      \"quantity\": 60,\n      \"status\": \"Pending Review\",\n      \"createdAt\": \"2026-06-28T07:05:10.000Z\"\n    }\n  ]\n}"
+        }
+      ]
+    },
+    {
+      "name": "Submit Inquiry",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"buyerName\": \"Himalayan Heritage Stores\",\n  \"buyerEmail\": \"contact@himalayanheritage.com\",\n  \"productName\": \"Traditional Almora Tamta Copper Water Jug\",\n  \"quantity\": 25\n}"
+        },
+        "url": {
+          "raw": "http://localhost:5000/api/inquiries",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "5000",
+          "path": [
+            "api",
+            "inquiries"
+          ]
+        }
+      },
+      "response": [
+        {
+          "name": "Created Response",
+          "originalRequest": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"buyerName\": \"Himalayan Heritage Stores\",\n  \"buyerEmail\": \"contact@himalayanheritage.com\",\n  \"productName\": \"Traditional Almora Tamta Copper Water Jug\",\n  \"quantity\": 25\n}"
+            },
+            "url": {
+              "raw": "http://localhost:5000/api/inquiries",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "5000",
+              "path": [
+                "api",
+                "inquiries"
+              ]
+            }
+          },
+          "status": "Created",
+          "code": 201,
+          "_postman_previewlanguage": "json",
+          "header": [
+            {
+              "key": "Content-Type",
+              "value": "application/json"
+            }
+          ],
+          "cookie": [],
+          "body": "{\n  \"success\": true,\n  \"data\": {\n    \"_id\": \"667ec340a6b7d15a31a90d99\",\n    \"buyerName\": \"Himalayan Heritage Stores\",\n    \"buyerEmail\": \"contact@himalayanheritage.com\",\n    \"productName\": \"Traditional Almora Tamta Copper Water Jug\",\n    \"quantity\": 25,\n    \"status\": \"Pending Review\",\n    \"createdAt\": \"2026-06-28T07:08:44.000Z\"\n  }\n}"
+        }
+      ]
+    },
+    {
+      "name": "Update Inquiry Status",
+      "request": {
+        "method": "PATCH",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"status\": \"Quote Sent\"\n}"
+        },
+        "url": {
+          "raw": "http://localhost:5000/api/inquiries/667ec340a6b7d15a31a90d15",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "5000",
+          "path": [
+            "api",
+            "inquiries",
+            "667ec340a6b7d15a31a90d15"
+          ]
+        }
+      },
+      "response": [
+        {
+          "name": "Success Response",
+          "originalRequest": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"status\": \"Quote Sent\"\n}"
+            },
+            "url": {
+              "raw": "http://localhost:5000/api/inquiries/667ec340a6b7d15a31a90d15",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "5000",
+              "path": [
+                "api",
+                "inquiries",
+                "667ec340a6b7d15a31a90d15"
+              ]
+            }
+          },
+          "status": "OK",
+          "code": 200,
+          "_postman_previewlanguage": "json",
+          "header": [
+            {
+              "key": "Content-Type",
+              "value": "application/json"
+            }
+          ],
+          "cookie": [],
+          "body": "{\n  \"success\": true,\n  \"data\": {\n    \"_id\": \"667ec340a6b7d15a31a90d15\",\n    \"buyerName\": \"FabIndia Sourcing Dept\",\n    \"buyerEmail\": \"procurement@fabindia.com\",\n    \"productName\": \"Panchachuli Handspun Tweed Woolen Fabric\",\n    \"quantity\": 60,\n    \"status\": \"Quote Sent\",\n    \"createdAt\": \"2026-06-28T07:05:10.000Z\"\n  }\n}"
+        }
+      ]
+    },
+    {
+      "name": "Delete Inquiry",
+      "request": {
+        "method": "DELETE",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:5000/api/inquiries/667ec340a6b7d15a31a90d99",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "5000",
+          "path": [
+            "api",
+            "inquiries",
+            "667ec340a6b7d15a31a90d99"
+          ]
+        }
+      },
+      "response": [
+        {
+          "name": "Success Response",
+          "originalRequest": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:5000/api/inquiries/667ec340a6b7d15a31a90d99",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "5000",
+              "path": [
+                "api",
+                "inquiries",
+                "667ec340a6b7d15a31a90d99"
+              ]
+            }
+          },
+          "status": "OK",
+          "code": 200,
+          "_postman_previewlanguage": "json",
+          "header": [
+            {
+              "key": "Content-Type",
+              "value": "application/json"
+            }
+          ],
+          "cookie": [],
+          "body": "{\n  \"success\": true,\n  \"message\": \"Inquiry successfully removed\"\n}"
+        }
+      ]
+    }
+  ]
+}
