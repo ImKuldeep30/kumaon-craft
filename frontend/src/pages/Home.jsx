@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState, useEffect } from 'react';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
 import ProductCard from '../components/ProductCard';
@@ -6,92 +6,78 @@ import Button from '../components/ui/Button';
 import Input from '../components/ui/Input';
 import Toast from '../components/ui/Toast';
 
-// Realistic product list representing the Himalayan heritage crafts
-const CRAFT_PRODUCTS = [
-    {
-        id: 1,
-        name: 'Panchachuli Handspun Tweed Woolen Fabric',
-        category: 'Handloom',
-        price: '₹2,400 / Meter',
-        minOrder: 15,
-        image: 'https://images.unsplash.com/photo-1544816155-12df9643f363?q=80&w=600&auto=format&fit=crop',
-        artisan: 'Bhagwati Devi, Munsyari',
-        description: 'Traditionally spun and hand-woven pure sheep wool fabric, colored with organic wild herb dyes. Ideal for premium winter coats and jackets.'
-    },
-    {
-        id: 2,
-        name: 'Traditional Almora Tamta Copper Water Jug',
-        category: 'Copperware',
-        price: '₹1,950 / Unit',
-        minOrder: 20,
-        image: 'https://images.unsplash.com/photo-1576016770956-debb63d900bb?q=80&w=600&auto=format&fit=crop',
-        artisan: 'Ram Chandra Tamta, Almora',
-        description: 'Exquisitely hand-hammered pure copper water container using traditional beating techniques passed down through generations of Tamta coppersmiths.'
-    },
-    {
-        id: 3,
-        name: 'Ringaal Bamboo Handwoven Basket Set',
-        category: 'Woodcraft',
-        price: '₹750 / Set',
-        minOrder: 30,
-        image: 'https://images.unsplash.com/photo-1531835551805-16d864c8d311?q=80&w=600&auto=format&fit=crop',
-        artisan: 'Dhyan Singh, Bageshwar',
-        description: 'Eco-friendly and durable nesting storage baskets woven intricately from wild hill bamboo (Ringaal). Lightweight and biodegradable.'
-    },
-    {
-        id: 4,
-        name: 'Decorative Handpainted Aipan Wood Chowki',
-        category: 'Aipan Art',
-        price: '₹1,500 / Piece',
-        minOrder: 10,
-        image: 'https://images.unsplash.com/photo-1561715276-a2d087060f1d?q=80&w=600&auto=format&fit=crop',
-        artisan: 'Kavita Pandey, Nainital',
-        description: 'Traditional ritual floor drawing art (Aipan) handpainted on a premium wooden base using authentic brick-red (Geru) and white rice paste colors.'
-    },
-    {
-        id: 5,
-        name: 'Wild Himalayan Giant Nettle (Kandali) Scarf',
-        category: 'Handloom',
-        price: '₹1,850 / Unit',
-        minOrder: 15,
-        image: 'https://images.unsplash.com/photo-1606744824163-985d376605aa?q=80&w=600&auto=format&fit=crop',
-        artisan: 'Sunita Bisht, Dharchula',
-        description: 'Organic, ethically harvested wild nettle fibers blended with soft organic cotton, woven on traditional Himalayan frame looms.'
-    },
-    {
-        id: 6,
-        name: 'Likhai Hand-Carved Wooden Wall Panel',
-        category: 'Woodcraft',
-        price: '₹8,500 / Piece',
-        minOrder: 5,
-        image: 'https://images.unsplash.com/photo-1507652313519-d4e9174996dd?q=80&w=600&auto=format&fit=crop',
-        artisan: 'Harish Ram, Jageshwar',
-        description: 'Intricately hand-carved cedar wood block displaying traditional Himalayan "Likhai" architectural motifs, perfect for high-end boutique interiors.'
-    }
-];
-
 const Home = () => {
     const [selectedCategory, setSelectedCategory] = useState('All');
     const [searchQuery, setSearchQuery] = useState('');
     const [inquiriesCount, setInquiriesCount] = useState(0);
     const [notification, setNotification] = useState('');
+    const [products, setProducts] = useState([]);
+    const [isLoading, setIsLoading] = useState(true);
+    const [error, setError] = useState(null);
 
     const categories = ['All', 'Handloom', 'Copperware', 'Woodcraft', 'Aipan Art'];
 
-    // Filter products based on category and search query
-    const filteredProducts = useMemo(() => {
-        return CRAFT_PRODUCTS.filter((product) => {
-            const matchesCategory = selectedCategory === 'All' || product.category === selectedCategory;
-            const matchesSearch = product.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-                product.artisan.toLowerCase().includes(searchQuery.toLowerCase()) ||
-                product.description.toLowerCase().includes(searchQuery.toLowerCase());
-            return matchesCategory && matchesSearch;
-        });
+    useEffect(() => {
+        const fetchProducts = async () => {
+            try {
+                setIsLoading(true);
+                let url = 'http://localhost:5000/api/products';
+                const params = [];
+                if (selectedCategory && selectedCategory !== 'All') {
+                    params.push(`category=${selectedCategory}`);
+                }
+                if (searchQuery) {
+                    params.push(`search=${encodeURIComponent(searchQuery)}`);
+                }
+                if (params.length > 0) {
+                    url += `?${params.join('&')}`;
+                }
+                const response = await fetch(url);
+                const result = await response.json();
+                if (result.success) {
+                    setProducts(result.data);
+                    setError(null);
+                } else {
+                    setError(result.message || 'Failed to fetch products');
+                }
+            } catch (err) {
+                setError('Could not connect to the database server');
+            } finally {
+                setIsLoading(false);
+            }
+        };
+
+        const delayDebounce = setTimeout(() => {
+            fetchProducts();
+        }, 300);
+
+        return () => clearTimeout(delayDebounce);
     }, [selectedCategory, searchQuery]);
 
-    const handleInquirySubmit = (product, details) => {
-        setInquiriesCount((prev) => prev + 1);
-        setNotification(`Wholesale inquiry submitted for ${product.name}!`);
+    const handleInquirySubmit = async (product, details) => {
+        try {
+            const response = await fetch('http://localhost:5000/api/inquiries', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    buyerName: details.name,
+                    buyerEmail: details.email,
+                    productName: product.name,
+                    quantity: details.quantity,
+                }),
+            });
+            const result = await response.json();
+            if (result.success) {
+                setInquiriesCount((prev) => prev + 1);
+                setNotification(`Wholesale inquiry submitted for ${product.name}!`);
+            } else {
+                setNotification(`Error: ${result.message}`);
+            }
+        } catch (err) {
+            setNotification('Error submitting inquiry. Check server status.');
+        }
         setTimeout(() => setNotification(''), 4000);
     };
 
@@ -238,18 +224,26 @@ const Home = () => {
                     />
 
                     {/* Product Grid */}
-                    {filteredProducts.length > 0 ? (
+                    {isLoading ? (
+                        <div className="flex justify-center py-20 w-full col-span-full">
+                            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary-500" />
+                        </div>
+                    ) : error ? (
+                        <div className="text-center py-20 text-red-500 font-semibold bg-white dark:bg-secondary-800/80 rounded-2xl border border-warm-200 dark:border-secondary-700/60 transition-theme w-full col-span-full">
+                            {error}
+                        </div>
+                    ) : products.length > 0 ? (
                         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
-                            {filteredProducts.map((product) => (
+                            {products.map((product) => (
                                 <ProductCard
-                                    key={product.id}
+                                    key={product._id}
                                     product={product}
                                     onInquire={handleInquirySubmit}
                                 />
                             ))}
                         </div>
                     ) : (
-                        <div className="text-center py-20 bg-white dark:bg-secondary-800/80 rounded-2xl border border-warm-200 dark:border-secondary-700/60 space-y-3 transition-theme">
+                        <div className="text-center py-20 bg-white dark:bg-secondary-800/80 rounded-2xl border border-warm-200 dark:border-secondary-700/60 space-y-3 transition-theme w-full col-span-full">
                             <div className="text-4xl">🍂</div>
                             <h3 className="font-serif text-xl font-bold text-secondary-800 dark:text-warm-100 transition-theme">No products found</h3>
                             <p className="text-sm text-secondary-600 dark:text-warm-300 max-w-md mx-auto transition-theme">

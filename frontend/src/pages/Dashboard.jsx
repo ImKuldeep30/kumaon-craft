@@ -7,58 +7,46 @@ import Input from '../components/ui/Input';
 import Modal from '../components/ui/Modal';
 import Toast from '../components/ui/Toast';
 
-const MOCK_INQUIRIES = [
-  {
-    id: 101,
-    buyerName: 'FabIndia Sourcing Dept',
-    buyerEmail: 'procurement@fabindia.com',
-    productName: 'Panchachuli Handspun Tweed Woolen Fabric',
-    quantity: 60,
-    date: '2026-06-15',
-    status: 'Pending Review'
-  },
-  {
-    id: 102,
-    buyerName: 'Organic Weaves Mumbai',
-    buyerEmail: 'hello@organicweaves.in',
-    productName: 'Wild Himalayan Giant Nettle Scarf',
-    quantity: 45,
-    date: '2026-06-12',
-    status: 'Quote Sent'
-  },
-  {
-    id: 103,
-    buyerName: 'Craft & Heritage Boutique NYC',
-    buyerEmail: 'imports@craftheritage.org',
-    productName: 'Likhai Hand-Carved Wooden Wall Panel',
-    quantity: 8,
-    date: '2026-06-10',
-    status: 'In Discussion'
-  }
-];
-
-const MOCK_ARTISAN_PRODUCTS = [
-  { id: 1, name: 'Panchachuli Handspun Tweed Woolen Fabric', category: 'Handloom', price: '₹2,400 / Meter', minOrder: 15 },
-  { id: 5, name: 'Wild Himalayan Giant Nettle (Kandali) Scarf', category: 'Handloom', price: '₹1,850 / Unit', minOrder: 15 },
-];
 
 const Dashboard = () => {
   const navigate = useNavigate();
   const [user, setUser] = useState({ email: 'artisan@kumaon.org', role: 'artisan' });
-  const [inquiries, setInquiries] = useState(MOCK_INQUIRIES);
-  const [products, setProducts] = useState(MOCK_ARTISAN_PRODUCTS);
+  const [inquiries, setInquiries] = useState([]);
+  const [products, setProducts] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
   
   // New product form states
   const [showAddForm, setShowAddForm] = useState(false);
   const [newProduct, setNewProduct] = useState({ name: '', category: 'Handloom', price: '', minOrder: 10 });
   const [notification, setNotification] = useState('');
 
+  const fetchDashboardData = async () => {
+    try {
+      setIsLoading(true);
+      const resInq = await fetch('http://localhost:5000/api/inquiries');
+      const dataInq = await resInq.json();
+      if (dataInq.success) {
+        setInquiries(dataInq.data);
+      }
+
+      const resProd = await fetch('http://localhost:5000/api/products');
+      const dataProd = await resProd.json();
+      if (dataProd.success) {
+        setProducts(dataProd.data);
+      }
+    } catch (err) {
+      console.error("Error fetching dashboard data", err);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
   useEffect(() => {
-    // Load session if exists
     const session = localStorage.getItem('user_session');
     if (session) {
       setUser(JSON.parse(session));
     }
+    fetchDashboardData();
   }, []);
 
   const handleLogout = () => {
@@ -66,35 +54,82 @@ const Dashboard = () => {
     navigate('/login');
   };
 
-  const handleAddProduct = (e) => {
+  const handleAddProduct = async (e) => {
     e.preventDefault();
     if (!newProduct.name || !newProduct.price) {
       alert("Please fill in the Product Name and Price.");
       return;
     }
-    const createdProduct = {
-      id: Date.now(),
-      ...newProduct,
-      minOrder: parseInt(newProduct.minOrder) || 10
-    };
-    setProducts([createdProduct, ...products]);
-    setShowAddForm(false);
-    setNewProduct({ name: '', category: 'Handloom', price: '', minOrder: 10 });
-    setNotification('New craft product added successfully!');
+    try {
+      const response = await fetch('http://localhost:5000/api/products', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          name: newProduct.name,
+          category: newProduct.category,
+          price: newProduct.price,
+          minOrder: parseInt(newProduct.minOrder) || 10,
+          artisan: user.email === 'artisan@kumaon.org' ? 'Almora Weavers Guild' : 'Himalayan Artisans',
+          image: 'https://images.unsplash.com/photo-1544816155-12df9643f363?q=80&w=600&auto=format&fit=crop',
+          description: `Handcrafted ${newProduct.category} product listing published via dashboard panel.`
+        }),
+      });
+      const result = await response.json();
+      if (result.success) {
+        setProducts([result.data, ...products]);
+        setShowAddForm(false);
+        setNewProduct({ name: '', category: 'Handloom', price: '', minOrder: 10 });
+        setNotification('New craft product added successfully!');
+      } else {
+        alert(`Error: ${result.message}`);
+      }
+    } catch (err) {
+      alert('Error connecting to backend.');
+    }
     setTimeout(() => setNotification(''), 4000);
   };
 
-  const handleDeleteProduct = (id) => {
+  const handleDeleteProduct = async (id) => {
     if (confirm("Are you sure you want to remove this product listing?")) {
-      setProducts(products.filter((p) => p.id !== id));
-      setNotification('Product listing removed.');
+      try {
+        const response = await fetch(`http://localhost:5000/api/products/${id}`, {
+          method: 'DELETE',
+        });
+        const result = await response.json();
+        if (result.success) {
+          setProducts(products.filter((p) => p._id !== id));
+          setNotification('Product listing removed.');
+        } else {
+          alert(`Error: ${result.message}`);
+        }
+      } catch (err) {
+        alert('Error removing product.');
+      }
       setTimeout(() => setNotification(''), 4000);
     }
   };
 
-  const handleUpdateStatus = (id, newStatus) => {
-    setInquiries(inquiries.map((inq) => inq.id === id ? { ...inq, status: newStatus } : inq));
-    setNotification(`Inquiry status updated to "${newStatus}"`);
+  const handleUpdateStatus = async (id, newStatus) => {
+    try {
+      const response = await fetch(`http://localhost:5000/api/inquiries/${id}`, {
+        method: 'PATCH',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ status: newStatus }),
+      });
+      const result = await response.json();
+      if (result.success) {
+        setInquiries(inquiries.map((inq) => inq._id === id ? { ...inq, status: newStatus } : inq));
+        setNotification(`Inquiry status updated to "${newStatus}"`);
+      } else {
+        alert(`Error: ${result.message}`);
+      }
+    } catch (err) {
+      alert('Error updating status.');
+    }
     setTimeout(() => setNotification(''), 3000);
   };
 
@@ -209,7 +244,7 @@ const Dashboard = () => {
                   </thead>
                   <tbody className="divide-y divide-warm-100 dark:divide-secondary-800 text-sm text-secondary-800 dark:text-warm-100 transition-theme">
                     {inquiries.map((inq) => (
-                      <tr key={inq.id} className="hover:bg-warm-50/50 dark:hover:bg-secondary-900/30 transition-colors duration-200">
+                      <tr key={inq._id} className="hover:bg-warm-50/50 dark:hover:bg-secondary-900/30 transition-colors duration-200">
                         <td className="px-6 py-4">
                           <div className="font-bold">{inq.buyerName}</div>
                           <div className="text-xs text-secondary-600/80 dark:text-warm-300/85">{inq.buyerEmail}</div>
@@ -231,7 +266,7 @@ const Dashboard = () => {
                           <td className="px-6 py-4 text-right space-x-2">
                             {inq.status === 'Pending Review' && (
                               <Button
-                                onClick={() => handleUpdateStatus(inq.id, 'Quote Sent')}
+                                onClick={() => handleUpdateStatus(inq._id, 'Quote Sent')}
                                 size="sm"
                               >
                                 Send Quote
@@ -239,7 +274,7 @@ const Dashboard = () => {
                             )}
                             {inq.status === 'Quote Sent' && (
                               <Button
-                                onClick={() => handleUpdateStatus(inq.id, 'In Discussion')}
+                                onClick={() => handleUpdateStatus(inq._id, 'In Discussion')}
                                 variant="secondary"
                                 size="sm"
                               >
@@ -274,14 +309,14 @@ const Dashboard = () => {
 
                   <div className="space-y-4">
                     {products.map((p) => (
-                      <div key={p.id} className="p-4 rounded-2xl border border-warm-200 dark:border-secondary-700 bg-warm-50/40 dark:bg-secondary-900/50 flex justify-between items-start gap-4 transition-theme">
+                      <div key={p._id} className="p-4 rounded-2xl border border-warm-200 dark:border-secondary-700 bg-warm-50/40 dark:bg-secondary-900/50 flex justify-between items-start gap-4 transition-theme">
                         <div className="space-y-1">
                           <span className="text-[9px] uppercase tracking-wider text-primary-600 dark:text-primary-400 font-bold transition-theme">{p.category}</span>
                           <h4 className="font-serif font-bold text-secondary-800 dark:text-warm-100 text-sm line-clamp-1 transition-theme">{p.name}</h4>
                           <div className="text-xs text-secondary-600 dark:text-warm-200 font-semibold transition-theme">{p.price}</div>
                         </div>
                         <Button
-                          onClick={() => handleDeleteProduct(p.id)}
+                          onClick={() => handleDeleteProduct(p._id)}
                           variant="ghost"
                           className="text-red-500 hover:text-red-700 p-1.5 hover:bg-red-50 dark:hover:bg-secondary-800 rounded-lg"
                         >
