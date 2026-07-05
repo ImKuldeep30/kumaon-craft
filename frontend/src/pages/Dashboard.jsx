@@ -19,6 +19,8 @@ const Dashboard = () => {
   const [showAddForm, setShowAddForm] = useState(false);
   const [newProduct, setNewProduct] = useState({ name: '', category: 'Handloom', price: '', minOrder: 10 });
   const [notification, setNotification] = useState('');
+  const [showEditForm, setShowEditForm] = useState(false);
+  const [editProduct, setEditProduct] = useState({ _id: '', name: '', category: 'Handloom', price: '', minOrder: 10 });
 
   const fetchDashboardData = async () => {
     try {
@@ -109,6 +111,50 @@ const Dashboard = () => {
       }
       setTimeout(() => setNotification(''), 4000);
     }
+  };
+
+  const handleEditClick = (product) => {
+    setEditProduct({
+      _id: product._id,
+      name: product.name,
+      category: product.category,
+      price: product.price,
+      minOrder: product.minOrder
+    });
+    setShowEditForm(true);
+  };
+
+  const handleUpdateProduct = async (e) => {
+    e.preventDefault();
+    if (!editProduct.name || !editProduct.price) {
+      alert("Please fill in the Product Name and Price.");
+      return;
+    }
+    try {
+      const response = await fetch(`http://localhost:5000/api/products/${editProduct._id}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          name: editProduct.name,
+          category: editProduct.category,
+          price: editProduct.price,
+          minOrder: parseInt(editProduct.minOrder) || 10,
+        }),
+      });
+      const result = await response.json();
+      if (result.success) {
+        setProducts(products.map((p) => p._id === editProduct._id ? result.data : p));
+        setShowEditForm(false);
+        setNotification('Craft product updated successfully!');
+      } else {
+        alert(`Error: ${result.message}`);
+      }
+    } catch (err) {
+      alert('Error connecting to backend.');
+    }
+    setTimeout(() => setNotification(''), 4000);
   };
 
   const handleUpdateStatus = async (id, newStatus) => {
@@ -315,13 +361,22 @@ const Dashboard = () => {
                           <h4 className="font-serif font-bold text-secondary-800 dark:text-warm-100 text-sm line-clamp-1 transition-theme">{p.name}</h4>
                           <div className="text-xs text-secondary-600 dark:text-warm-200 font-semibold transition-theme">{p.price}</div>
                         </div>
-                        <Button
-                          onClick={() => handleDeleteProduct(p._id)}
-                          variant="ghost"
-                          className="text-red-500 hover:text-red-700 p-1.5 hover:bg-red-50 dark:hover:bg-secondary-800 rounded-lg"
-                        >
-                          🗑️
-                        </Button>
+                        <div className="flex gap-2">
+                          <Button
+                            onClick={() => handleEditClick(p)}
+                            variant="ghost"
+                            className="text-blue-500 hover:text-blue-700 p-1.5 hover:bg-blue-50 dark:hover:bg-secondary-800 rounded-lg cursor-pointer"
+                          >
+                            ✏️
+                          </Button>
+                          <Button
+                            onClick={() => handleDeleteProduct(p._id)}
+                            variant="ghost"
+                            className="text-red-500 hover:text-red-700 p-1.5 hover:bg-red-50 dark:hover:bg-secondary-800 rounded-lg cursor-pointer"
+                          >
+                            🗑️
+                          </Button>
+                        </div>
                       </div>
                     ))}
                   </div>
@@ -396,6 +451,64 @@ const Dashboard = () => {
             </Button>
           </form>
         </Modal>
+          )}
+
+          {/* EDIT PRODUCT MODAL / DIALOG */}
+          {showEditForm && (
+            <Modal
+              isOpen={showEditForm}
+              onClose={() => setShowEditForm(false)}
+              title="Edit Heritage Craft"
+              subtitle="Artisan / Guild Admin Panel"
+            >
+              <form onSubmit={handleUpdateProduct} className="space-y-4">
+                <Input
+                  label="Product Name"
+                  type="text"
+                  value={editProduct.name}
+                  onChange={(e) => setEditProduct({ ...editProduct, name: e.target.value })}
+                  placeholder="e.g., Handpainted Aipan Puja Box"
+                  required
+                />
+
+                <Input
+                  label="Category"
+                  select
+                  value={editProduct.category}
+                  onChange={(e) => setEditProduct({ ...editProduct, category: e.target.value })}
+                >
+                  <option value="Handloom">Handloom</option>
+                  <option value="Copperware">Copperware</option>
+                  <option value="Woodcraft">Woodcraft</option>
+                  <option value="Aipan Art">Aipan Art</option>
+                </Input>
+
+                <Input
+                  label="Wholesale Pricing"
+                  type="text"
+                  value={editProduct.price}
+                  onChange={(e) => setEditProduct({ ...editProduct, price: e.target.value })}
+                  placeholder="e.g., ₹2,200 / Unit"
+                  required
+                />
+
+                <Input
+                  label="Minimum Order Qty"
+                  type="number"
+                  min={1}
+                  value={editProduct.minOrder}
+                  onChange={(e) => setEditProduct({ ...editProduct, minOrder: parseInt(e.target.value) || 10 })}
+                  required
+                />
+
+                <Button
+                  type="submit"
+                  className="w-full mt-2"
+                >
+                  Update Listing
+                </Button>
+              </form>
+            </Modal>
           )}
 
         </div>
