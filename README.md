@@ -60,6 +60,34 @@ We are actively developing the next stages of the Kumaon Craft Connect platform.
 
 ---
 
+## 📊 Database Schema Diagram
+
+Below is the database entity-relationship schema layout representing the Products catalog and Wholesale Inquiries:
+
+![Kumaon Craft Schema Diagram](./W5_SchemaDiagram_26100848.png)
+
+### Collections & Fields:
+* **Products (`Product` model)**:
+  * `_id` (ObjectId): Primary key.
+  * `name` (String): Product title.
+  * `category` (String): Craft type (e.g. Handloom, Copperware, Woodcraft, Aipan Art).
+  * `price` (String): Wholesale pricing unit.
+  * `minOrder` (Number): Minimum order quantity.
+  * `image` (String): Image URL.
+  * `artisan` (String): Artisan details.
+  * `description` (String): Full product details.
+  * `createdAt` (Date): Creation timestamp.
+* **Inquiries (`Inquiry` model)**:
+  * `_id` (ObjectId): Primary key.
+  * `buyerName` (String): Buyer full name.
+  * `buyerEmail` (String): Validated business email.
+  * `productName` (String): References `Product.name`.
+  * `quantity` (Number): Requested batch quantity.
+  * `status` (String): Inquiry workflow status (e.g. Pending Review, Quote Sent, In Discussion).
+  * `createdAt` (Date): Submission timestamp.
+
+---
+
 ## 🛠️ How to Run Backend Locally
 
 To run the Node.js Express backend service on your local machine:
