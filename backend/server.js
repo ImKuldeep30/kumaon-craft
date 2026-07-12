@@ -4,6 +4,7 @@ import cors from 'cors';
 import connectDB from './src/config/db.js';
 import productRoutes from './src/routes/productRoutes.js';
 import inquiryRoutes from './src/routes/inquiryRoutes.js';
+import authRoutes from './src/routes/authRoutes.js';
 import { notFound, errorHandler } from './src/middleware/errorMiddleware.js';
 
 // Load env variables
@@ -29,6 +30,7 @@ app.get('/', (req, res) => {
 // Mount Routes
 app.use('/api/products', productRoutes);
 app.use('/api/inquiries', inquiryRoutes);
+app.use('/api/auth', authRoutes);
 
 // Fallback Middlewares
 app.use(notFound);

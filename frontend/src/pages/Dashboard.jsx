@@ -25,13 +25,21 @@ const Dashboard = () => {
   const fetchDashboardData = async () => {
     try {
       setIsLoading(true);
-      const resInq = await fetch('http://localhost:5000/api/inquiries');
+      const session = localStorage.getItem('user_session');
+      let token = '';
+      if (session) {
+        token = JSON.parse(session).token;
+      }
+      
+      const headers = token ? { 'Authorization': `Bearer ${token}` } : {};
+
+      const resInq = await fetch('http://localhost:5000/api/inquiries', { headers });
       const dataInq = await resInq.json();
       if (dataInq.success) {
         setInquiries(dataInq.data);
       }
 
-      const resProd = await fetch('http://localhost:5000/api/products');
+      const resProd = await fetch('http://localhost:5000/api/products', { headers });
       const dataProd = await resProd.json();
       if (dataProd.success) {
         setProducts(dataProd.data);
@@ -63,10 +71,14 @@ const Dashboard = () => {
       return;
     }
     try {
+      const session = localStorage.getItem('user_session');
+      const token = session ? JSON.parse(session).token : '';
+      
       const response = await fetch('http://localhost:5000/api/products', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
         },
         body: JSON.stringify({
           name: newProduct.name,
@@ -96,8 +108,14 @@ const Dashboard = () => {
   const handleDeleteProduct = async (id) => {
     if (confirm("Are you sure you want to remove this product listing?")) {
       try {
+        const session = localStorage.getItem('user_session');
+        const token = session ? JSON.parse(session).token : '';
+        
         const response = await fetch(`http://localhost:5000/api/products/${id}`, {
           method: 'DELETE',
+          headers: {
+            'Authorization': `Bearer ${token}`
+          }
         });
         const result = await response.json();
         if (result.success) {
@@ -131,10 +149,14 @@ const Dashboard = () => {
       return;
     }
     try {
+      const session = localStorage.getItem('user_session');
+      const token = session ? JSON.parse(session).token : '';
+      
       const response = await fetch(`http://localhost:5000/api/products/${editProduct._id}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
         },
         body: JSON.stringify({
           name: editProduct.name,
@@ -159,10 +181,14 @@ const Dashboard = () => {
 
   const handleUpdateStatus = async (id, newStatus) => {
     try {
+      const session = localStorage.getItem('user_session');
+      const token = session ? JSON.parse(session).token : '';
+      
       const response = await fetch(`http://localhost:5000/api/inquiries/${id}`, {
         method: 'PATCH',
         headers: {
           'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
         },
         body: JSON.stringify({ status: newStatus }),
       });

@@ -5,15 +5,16 @@ import {
   updateInquiryStatus,
   deleteInquiry
 } from '../controllers/inquiryController.js';
+import { protect, authorizeRoles } from '../middleware/authMiddleware.js';
 
 const router = express.Router();
 
 router.route('/')
-  .get(getInquiries)
-  .post(createInquiry);
+  .get(protect, getInquiries)
+  .post(protect, createInquiry);
 
 router.route('/:id')
-  .patch(updateInquiryStatus)
-  .delete(deleteInquiry);
+  .patch(protect, authorizeRoles('artisan'), updateInquiryStatus)
+  .delete(protect, authorizeRoles('artisan'), deleteInquiry);
 
 export default router;

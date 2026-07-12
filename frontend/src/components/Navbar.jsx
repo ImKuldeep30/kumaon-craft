@@ -5,6 +5,7 @@ import Button from './ui/Button';
 const Navbar = () => {
     const [isOpen, setIsOpen] = useState(false);
     const location = useLocation();
+    const [isLoggedIn, setIsLoggedIn] = useState(false);
 
     const [theme, setTheme] = useState(() => {
         if (typeof window !== 'undefined') {
@@ -24,15 +25,32 @@ const Navbar = () => {
         localStorage.setItem('theme', theme);
     }, [theme]);
 
+    useEffect(() => {
+        const session = localStorage.getItem('user_session');
+        setIsLoggedIn(!!session);
+    }, [location.pathname]);
+
     const toggleTheme = () => {
         setTheme((prev) => (prev === 'light' ? 'dark' : 'light'));
     };
 
-    const navLinks = [
-        { name: 'Home', path: '/' },
-        { name: 'About', path: '/about' },
-        { name: 'Dashboard', path: '/dashboard' },
-    ];
+    const handleLogout = () => {
+        localStorage.removeItem('user_session');
+        setIsLoggedIn(false);
+        window.location.href = '/login';
+    };
+
+    const navLinks = isLoggedIn
+        ? [
+              { name: 'Home', path: '/' },
+              { name: 'About', path: '/about' },
+              { name: 'Dashboard', path: '/dashboard' },
+              { name: 'Settings', path: '/settings' },
+          ]
+        : [
+              { name: 'Home', path: '/' },
+              { name: 'About', path: '/about' },
+          ];
 
     const isActive = (path) => location.pathname === path;
 
@@ -95,12 +113,21 @@ const Navbar = () => {
                             )}
                         </button>
 
-                        <Button
-                            to="/login"
-                            className="rounded-full"
-                        >
-                            Login
-                        </Button>
+                        {isLoggedIn ? (
+                            <Button
+                                onClick={handleLogout}
+                                className="rounded-full cursor-pointer bg-red-600 hover:bg-red-700"
+                            >
+                                Logout
+                            </Button>
+                        ) : (
+                            <Button
+                                to="/login"
+                                className="rounded-full"
+                            >
+                                Login
+                            </Button>
+                        )}
                     </div>
 
                     {/* Mobile controls */}
@@ -161,13 +188,25 @@ const Navbar = () => {
                         </Link>
                     ))}
                     <div className="pt-4 border-t border-warm-200/60 dark:border-secondary-800/60">
-                        <Button
-                            to="/login"
-                            onClick={() => setIsOpen(false)}
-                            className="w-full text-center py-3 text-base"
-                        >
-                            Login
-                        </Button>
+                        {isLoggedIn ? (
+                            <Button
+                                onClick={() => {
+                                    setIsOpen(false);
+                                    handleLogout();
+                                }}
+                                className="w-full text-center py-3 text-base bg-red-600 hover:bg-red-700"
+                            >
+                                Logout
+                            </Button>
+                        ) : (
+                            <Button
+                                to="/login"
+                                onClick={() => setIsOpen(false)}
+                                className="w-full text-center py-3 text-base"
+                            >
+                                Login
+                            </Button>
+                        )}
                     </div>
                 </div>
             </div>
