@@ -5,6 +5,7 @@ import ProductCard from '../components/ProductCard';
 import Button from '../components/ui/Button';
 import Input from '../components/ui/Input';
 import Toast from '../components/ui/Toast';
+import ChatbotWidget from '../components/ChatbotWidget';
 
 const Home = () => {
     const [selectedCategory, setSelectedCategory] = useState('All');
@@ -262,6 +263,7 @@ const Home = () => {
                 </div>
             )}
 
+            <ChatbotWidget />
             <Footer />
         </div>
     );

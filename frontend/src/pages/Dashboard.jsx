@@ -6,6 +6,7 @@ import Button from '../components/ui/Button';
 import Input from '../components/ui/Input';
 import Modal from '../components/ui/Modal';
 import Toast from '../components/ui/Toast';
+import ChatbotWidget from '../components/ChatbotWidget';
 
 
 const Dashboard = () => {
@@ -540,6 +541,7 @@ const Dashboard = () => {
         </div>
       </div>
 
+      <ChatbotWidget />
       <Footer />
     </div>
   );

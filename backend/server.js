@@ -5,6 +5,7 @@ import connectDB from './src/config/db.js';
 import productRoutes from './src/routes/productRoutes.js';
 import inquiryRoutes from './src/routes/inquiryRoutes.js';
 import authRoutes from './src/routes/authRoutes.js';
+import aiRoutes from './src/routes/aiRoutes.js';
 import { notFound, errorHandler } from './src/middleware/errorMiddleware.js';
 
 // Load env variables
@@ -31,6 +32,7 @@ app.get('/', (req, res) => {
 app.use('/api/products', productRoutes);
 app.use('/api/inquiries', inquiryRoutes);
 app.use('/api/auth', authRoutes);
+app.use('/api/ai', aiRoutes);
 
 // Fallback Middlewares
 app.use(notFound);

@@ -7,6 +7,7 @@ import Login from './pages/Login';
 import Register from './pages/Register';
 import Settings from './pages/Settings';
 import OAuthSuccess from './pages/OAuthSuccess';
+import AIChat from './pages/AIChat';
 import ProtectedRoute from './components/ProtectedRoute';
 
 const App = () => {
@@ -18,6 +19,7 @@ const App = () => {
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
         <Route path="/oauth-success" element={<OAuthSuccess />} />
+        <Route path="/chat" element={<AIChat />} />
         
         {/* Protected routes */}
         <Route
