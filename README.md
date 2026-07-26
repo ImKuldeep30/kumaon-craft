@@ -39,24 +39,25 @@ kumaon-craft-connect/
 
 ---
 
-## 🚀 Features Coming Soon
+## ✨ Key Features Implemented
 
-We are actively developing the next stages of the Kumaon Craft Connect platform. The upcoming roadmap features include:
+The platform has been fully developed with the following core functionalities active:
 
 ### 1. Database & Backend API Integration
-- **Relational Databases:** Transitioning from local mock JSON simulations to database storage (e.g., PostgreSQL or MongoDB) to store artisan details, buyer information, and catalog product listings.
-- **Inquiry Processing API:** Secure REST endpoints to submit, process, and update the status of wholesale inquiries with auto-email alerts.
+- **MongoDB Atlas Integration**: Dynamic collection layers store products catalog and inquiry data securely.
+- **RESTful Endpoints**: Dedicated routes process inquiries, fetch catalog items dynamically, and handle full CRUD updates.
 
-### 2. Verified Authentication & Role Access
-- **JSON Web Tokens (JWT):** Implementing encrypted login sessions for both artisans and verified wholesale buyers.
-- **Admin Roles:** Dashboards for guild managers to handle seller approvals, verify artisan credentials, and manage system parameters.
+### 2. Secure JWT & OAuth 2.0 Access
+- **Token Sessions**: Registers and authenticates accounts securely with JSON Web Tokens (JWT).
+- **Google OAuth Login**: Supports verified social auth flows alongside email-based roles.
+- **Protected Routing**: Role-based access ensures buyers manage their own inquiries and artisans manage guild product listings.
 
-### 3. Real-Time Negotiation & Messaging
-- **Direct Guild Chat:** Allowing institutional buyers to negotiate fabric yards, custom copper dimensions, or custom wood carvings directly with the guild leaders.
-- **Notifications Hub:** Real-time push updates for status changes on custom wholesale estimates.
+### 3. Ask AI Concierge Chatbot
+- **Gemini 3.5 Integration**: A full-screen conversational assistant provides concise guidance on Himalayan crafts.
+- **Interactive Prompt Logs**: A left side panel records active session prompts and jumps to the message bubble on click.
 
-### 4. Interactive Heritage Map
-- **Artisan Stories:** An interactive map highlighting exact Himalayan villages, artisan profiles, video tours of handloom setups, and regional stories behind specific craft techniques.
+### 4. Zero Hardcoded Data
+- Every single frontend catalog view, statistic card, and metric counter dynamically reads from backend Mongoose endpoints.
 
 ---
 
