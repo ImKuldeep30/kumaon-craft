@@ -68,7 +68,8 @@ const Dashboard = () => {
   const handleAddProduct = async (e) => {
     e.preventDefault();
     if (!newProduct.name || !newProduct.price) {
-      alert("Please fill in the Product Name and Price.");
+      setNotification("Validation Error: Please fill in the Product Name and Price.");
+      setTimeout(() => setNotification(''), 4000);
       return;
     }
     try {
@@ -98,10 +99,10 @@ const Dashboard = () => {
         setNewProduct({ name: '', category: 'Handloom', price: '', minOrder: 10 });
         setNotification('New craft product added successfully!');
       } else {
-        alert(`Error: ${result.message}`);
+        setNotification(`Error: ${result.message}`);
       }
     } catch (err) {
-      alert('Error connecting to backend.');
+      setNotification('Error connecting to backend.');
     }
     setTimeout(() => setNotification(''), 4000);
   };
