@@ -265,7 +265,7 @@ const Dashboard = () => {
           <Toast
             message={notification}
             onClose={() => setNotification('')}
-            fixed={false}
+            fixed={true}
             className="animate-fade-in"
           />
 
