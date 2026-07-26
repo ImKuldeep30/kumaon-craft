@@ -206,6 +206,24 @@ const Dashboard = () => {
     setTimeout(() => setNotification(''), 3000);
   };
 
+  // Filter inquiries so buyers see only their own, while artisans see all.
+  const displayedInquiries = user.role === 'artisan'
+    ? inquiries
+    : inquiries.filter((inq) => inq.buyerEmail === user.email);
+
+  // Dynamic estimate of total value for the artisan guild
+  const calculateGuildValue = () => {
+    let total = 0;
+    inquiries.forEach((inq) => {
+      const prod = products.find((p) => p.name === inq.productName);
+      if (prod) {
+        const priceNum = parseInt(prod.price.replace(/[^0-9]/g, '')) || 0;
+        total += priceNum * inq.quantity;
+      }
+    });
+    return total > 0 ? (total >= 100000 ? `₹${(total / 100000).toFixed(1)}L` : `₹${(total / 1000).toFixed(0)}K`) : '₹2.8L+';
+  };
+
   return (
     <div className="min-h-screen flex flex-col justify-between">
       <Navbar />
@@ -270,22 +288,26 @@ const Dashboard = () => {
               </div>
               <div className="bg-white dark:bg-secondary-800/80 p-6 rounded-2xl border border-warm-200 dark:border-secondary-700/60 shadow-sm space-y-2 transition-theme">
                 <span className="text-[10px] uppercase tracking-wider text-secondary-600/60 dark:text-warm-300/60 font-bold block transition-theme">Estimated Guild Value</span>
-                <span className="text-3xl font-bold text-secondary-800 dark:text-warm-100 font-serif transition-theme">₹2.8L+</span>
+                <span className="text-3xl font-bold text-secondary-800 dark:text-warm-100 font-serif transition-theme">{calculateGuildValue()}</span>
               </div>
             </div>
           ) : (
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
               <div className="bg-white dark:bg-secondary-800/80 p-6 rounded-2xl border border-warm-200 dark:border-secondary-700/60 shadow-sm space-y-2 transition-theme">
                 <span className="text-[10px] uppercase tracking-wider text-secondary-600/60 dark:text-warm-300/60 font-bold block transition-theme">Submitted Inquiries</span>
-                <span className="text-3xl font-bold text-secondary-800 dark:text-warm-100 font-serif transition-theme">4 Requests</span>
+                <span className="text-3xl font-bold text-secondary-800 dark:text-warm-100 font-serif transition-theme">{displayedInquiries.length} Requests</span>
               </div>
               <div className="bg-white dark:bg-secondary-800/80 p-6 rounded-2xl border border-warm-200 dark:border-secondary-700/60 shadow-sm space-y-2 transition-theme">
                 <span className="text-[10px] uppercase tracking-wider text-secondary-600/60 dark:text-warm-300/60 font-bold block transition-theme">Active Quotes Received</span>
-                <span className="text-3xl font-bold text-primary-500 dark:text-primary-400 font-serif transition-theme">2 Offers</span>
+                <span className="text-3xl font-bold text-primary-500 dark:text-primary-400 font-serif transition-theme">
+                  {displayedInquiries.filter((i) => i.status === 'Quote Sent').length} Offers
+                </span>
               </div>
               <div className="bg-white dark:bg-secondary-800/80 p-6 rounded-2xl border border-warm-200 dark:border-secondary-700/60 shadow-sm space-y-2 transition-theme">
                 <span className="text-[10px] uppercase tracking-wider text-secondary-600/60 dark:text-warm-300/60 font-bold block transition-theme">Drafted Contracts</span>
-                <span className="text-3xl font-bold text-secondary-800 dark:text-warm-100 font-serif transition-theme">1 Pending</span>
+                <span className="text-3xl font-bold text-secondary-800 dark:text-warm-100 font-serif transition-theme">
+                  {displayedInquiries.filter((i) => i.status === 'In Discussion').length} Pending
+                </span>
               </div>
             </div>
           )}
@@ -300,7 +322,7 @@ const Dashboard = () => {
                   {user.role === 'artisan' ? 'Wholesale Inquiry Management' : 'Your Sourcing Inquiries'}
                 </h2>
                 <span className="px-2.5 py-1 bg-warm-100 dark:bg-secondary-900 text-secondary-700 dark:text-warm-200 text-xs font-bold rounded-full transition-theme">
-                  {inquiries.length} requests
+                  {displayedInquiries.length} requests
                 </span>
               </div>
               
@@ -316,7 +338,7 @@ const Dashboard = () => {
                     </tr>
                   </thead>
                   <tbody className="divide-y divide-warm-100 dark:divide-secondary-800 text-sm text-secondary-800 dark:text-warm-100 transition-theme">
-                    {inquiries.map((inq) => (
+                    {displayedInquiries.map((inq) => (
                       <tr key={inq._id} className="hover:bg-warm-50/50 dark:hover:bg-secondary-900/30 transition-colors duration-200">
                         <td className="px-6 py-4">
                           <div className="font-bold">{inq.buyerName}</div>
