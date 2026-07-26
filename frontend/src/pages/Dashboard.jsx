@@ -147,7 +147,8 @@ const Dashboard = () => {
   const handleUpdateProduct = async (e) => {
     e.preventDefault();
     if (!editProduct.name || !editProduct.price) {
-      alert("Please fill in the Product Name and Price.");
+      setNotification("Validation Error: Please fill in the Product Name and Price.");
+      setTimeout(() => setNotification(''), 4000);
       return;
     }
     try {
@@ -173,10 +174,10 @@ const Dashboard = () => {
         setShowEditForm(false);
         setNotification('Craft product updated successfully!');
       } else {
-        alert(`Error: ${result.message}`);
+        setNotification(`Error: ${result.message}`);
       }
     } catch (err) {
-      alert('Error connecting to backend.');
+      setNotification('Error connecting to backend.');
     }
     setTimeout(() => setNotification(''), 4000);
   };
