@@ -22,6 +22,8 @@ const Dashboard = () => {
   const [notification, setNotification] = useState('');
   const [showEditForm, setShowEditForm] = useState(false);
   const [editProduct, setEditProduct] = useState({ _id: '', name: '', category: 'Handloom', price: '', minOrder: 10 });
+  const [showConfirmModal, setShowConfirmModal] = useState(false);
+  const [productToDelete, setProductToDelete] = useState(null);
 
   const fetchDashboardData = async () => {
     try {
@@ -107,30 +109,46 @@ const Dashboard = () => {
     setTimeout(() => setNotification(''), 4000);
   };
 
-  const handleDeleteProduct = async (id) => {
-    if (confirm("Are you sure you want to remove this product listing?")) {
-      try {
-        const session = localStorage.getItem('user_session');
-        const token = session ? JSON.parse(session).token : '';
-        
-        const response = await fetch(`http://localhost:5000/api/products/${id}`, {
-          method: 'DELETE',
-          headers: {
-            'Authorization': `Bearer ${token}`
-          }
-        });
-        const result = await response.json();
-        if (result.success) {
-          setProducts(products.filter((p) => p._id !== id));
-          setNotification('Product listing removed.');
-        } else {
-          alert(`Error: ${result.message}`);
-        }
-      } catch (err) {
-        alert('Error removing product.');
-      }
-      setTimeout(() => setNotification(''), 4000);
+  const handleDeleteClick = (id) => {
+    setProductToDelete(id);
+    setShowConfirmModal(true);
+  };
+
+  const handleConfirmDelete = async () => {
+    if (productToDelete) {
+      await executeDeleteProduct(productToDelete);
+      setShowConfirmModal(false);
+      setProductToDelete(null);
     }
+  };
+
+  const handleCancelDelete = () => {
+    setShowConfirmModal(false);
+    setProductToDelete(null);
+  };
+
+  const executeDeleteProduct = async (id) => {
+    try {
+      const session = localStorage.getItem('user_session');
+      const token = session ? JSON.parse(session).token : '';
+      
+      const response = await fetch(`http://localhost:5000/api/products/${id}`, {
+        method: 'DELETE',
+        headers: {
+          'Authorization': `Bearer ${token}`
+        }
+      });
+      const result = await response.json();
+      if (result.success) {
+        setProducts(products.filter((p) => p._id !== id));
+        setNotification('Product listing removed.');
+      } else {
+        setNotification(`Error: ${result.message}`);
+      }
+    } catch (err) {
+      setNotification('Error removing product.');
+    }
+    setTimeout(() => setNotification(''), 4000);
   };
 
   const handleEditClick = (product) => {
@@ -421,7 +439,7 @@ const Dashboard = () => {
                             ✏️
                           </Button>
                           <Button
-                            onClick={() => handleDeleteProduct(p._id)}
+                            onClick={() => handleDeleteClick(p._id)}
                             variant="ghost"
                             className="text-red-500 hover:text-red-700 p-1.5 hover:bg-red-50 dark:hover:bg-secondary-800 rounded-lg cursor-pointer"
                           >
@@ -559,6 +577,47 @@ const Dashboard = () => {
                   Update Listing
                 </Button>
               </form>
+            </Modal>
+          )}
+
+          {/* CUSTOM CONFIRM DELETE MODAL */}
+          {showConfirmModal && (
+            <Modal
+              isOpen={showConfirmModal}
+              onClose={handleCancelDelete}
+              title="Confirm Listing Removal"
+              subtitle="Artisan / Guild Admin Panel"
+            >
+              <div className="space-y-6 text-center py-4">
+                <div className="mx-auto w-16 h-16 rounded-full bg-red-50 dark:bg-red-950/20 text-red-600 dark:text-red-400 flex items-center justify-center text-2xl font-bold shadow-sm animate-pulse">
+                  ⚠️
+                </div>
+                
+                <div className="space-y-2">
+                  <h3 className="font-serif text-lg font-bold text-secondary-800 dark:text-warm-100">
+                    Are you absolutely sure?
+                  </h3>
+                  <p className="text-xs text-secondary-600 dark:text-warm-300 max-w-sm mx-auto leading-relaxed">
+                    This action will permanently delete this heritage craft listing from the public wholesale catalog. This process cannot be undone.
+                  </p>
+                </div>
+
+                <div className="flex gap-4 pt-2">
+                  <Button
+                    onClick={handleCancelDelete}
+                    variant="outline"
+                    className="flex-1"
+                  >
+                    Cancel
+                  </Button>
+                  <Button
+                    onClick={handleConfirmDelete}
+                    className="flex-1 !bg-red-500 hover:!bg-red-600 hover:shadow-lg transition-all duration-300 text-white"
+                  >
+                    Yes, Delete
+                  </Button>
+                </div>
+              </div>
             </Modal>
           )}
 
