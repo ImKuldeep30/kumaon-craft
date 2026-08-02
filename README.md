@@ -133,3 +133,22 @@ To run the Node.js Express backend service on your local machine:
 
 The backend server will run on [http://localhost:5000](http://localhost:5000) by default. You can test the main server status by opening [http://localhost:5000/](http://localhost:5000/) in your browser.
 
+---
+
+## 🚀 Live Production Deployment
+
+### 🔗 Application URLs
+* **Live Frontend Website**: [https://kumaon-craft.vercel.app](https://kumaon-craft.vercel.app)
+* **Live Backend REST API**: [https://kumaon-craft-backend.onrender.com](https://kumaon-craft-backend.onrender.com)
+
+### 🛠️ Tech Stack Summary
+* **Frontend**: React.js (Vite), Tailwind CSS v4, React Router, Context API, Lucide Icons, Glassmorphic UI Design.
+* **Backend**: Node.js, Express.js, Mongoose ODM, JWT Authentication (JSON Web Tokens), CORS Middleware.
+* **Database**: MongoDB Atlas (Cloud Database Cluster).
+* **AI Model Integration**: Google Generative AI (Gemini 1.5 Pro / Flash) for B2B advising & product chatbot concierges.
+
+### ⚠️ Known Limitations (Free Hosting Tier)
+* **Render Cold Start Delay**: The backend API is hosted on **Render's free tier**. If the server is inactive for **15 minutes**, Render automatically spins down the container to save resources. When a user first opens the page after an idle period, the first API request will take **30 to 60 seconds** to wake up the server. Once the server is awake, navigation and updates will respond instantly.
+* **MongoDB Atlas Connection Limits**: Hosted on a shared M0 cluster, optimized for demo usage and validation.
+* **Google Social Logins (Mock Bypass)**: Implemented with a Mock Social Auth configuration to permit direct evaluations and automated profile routing without Google OAuth Client credential restrictions.
+
