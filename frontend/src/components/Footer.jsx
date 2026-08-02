@@ -53,7 +53,7 @@ const Footer = () => {
                 </Link>
               </li>
               <li>
-                <Link to="/login" className="text-warm-300 hover:text-primary-200 transition-colors duration-300 font-semibold text-primary-200">
+                <Link to="/login?role=artisan" className="text-warm-300 hover:text-primary-200 transition-colors duration-300 font-semibold text-primary-200">
                   Artisan Portal
                 </Link>
               </li>

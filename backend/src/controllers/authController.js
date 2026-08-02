@@ -62,12 +62,20 @@ export const registerUser = async (req, res) => {
 // @access  Public
 export const loginUser = async (req, res) => {
   try {
-    const { email, password } = req.body;
+    const { email, password, role } = req.body;
 
     // Check for user
     const user = await User.findOne({ email });
 
     if (user && (await user.matchPassword(password))) {
+      // Enforce role matching during standard email login
+      if (role && user.role !== role) {
+        return res.status(401).json({
+          success: false,
+          message: 'Invalid email address or password',
+        });
+      }
+
       res.json({
         success: true,
         data: {
@@ -97,13 +105,14 @@ export const loginUser = async (req, res) => {
 // @access  Public
 export const googleAuthRedirect = (req, res) => {
   const googleClientId = process.env.GOOGLE_CLIENT_ID;
+  const role = req.query.role || 'buyer';
 
   if (googleClientId) {
     // Real Google OAuth redirect
     const redirectUri = `${req.protocol}://${req.get('host')}/api/auth/google/callback`;
     const googleAuthUrl = `https://accounts.google.com/o/oauth2/v2/auth?client_id=${googleClientId}&redirect_uri=${encodeURIComponent(
       redirectUri
-    )}&response_type=code&scope=profile%20email`;
+    )}&response_type=code&scope=profile%20email&state=${role}`;
     return res.redirect(googleAuthUrl);
   } else {
     // Fail-safe mock Google Consent Page for local development/grading
@@ -181,9 +190,9 @@ export const googleAuthRedirect = (req, res) => {
         <div class="card">
           <div class="logo">⛰️ Kumaon Craft Connect</div>
           <h1 class="title">Google Accounts</h1>
-          <p class="subtitle">Sign in to share your name and email address with Kumaon Craft Connect.</p>
+          <p class="subtitle">Sign in as ${role === 'artisan' ? 'Artisan' : 'Wholesale Buyer'} to share your details with Kumaon Craft Connect.</p>
           
-          <a href="/api/auth/google/callback?code=mock_oauth_success_code" class="btn-google">
+          <a href="/api/auth/google/callback?code=mock_oauth_success_code&state=${role}" class="btn-google">
             <svg width="18" height="18" viewBox="0 0 18 18">
               <path d="M17.64 9.2c0-.637-.057-1.251-.164-1.84H9v3.481h4.844c-.209 1.125-.843 2.078-1.796 2.717v2.258h2.908c1.702-1.567 2.684-3.874 2.684-6.615z" fill="#4285F4"/>
               <path d="M9 18c2.43 0 4.467-.806 5.956-2.18l-2.908-2.258c-.806.54-1.837.86-3.048.86-2.344 0-4.328-1.584-5.036-3.711H.957v2.332C2.438 15.983 5.482 18 9 18z" fill="#34A853"/>
@@ -206,10 +215,11 @@ export const googleAuthRedirect = (req, res) => {
 // @access  Public
 export const googleAuthCallback = async (req, res) => {
   try {
-    const { code } = req.query;
+    const { code, state } = req.query;
+    const role = state || 'buyer';
     let profile = {
-      name: 'Google Explorer',
-      email: 'google-oauth-user@gmail.com',
+      name: 'Kuldeep Kohli',
+      email: 'kuldpkohli2003@gmail.com',
       oauthId: 'google-123456789',
     };
 
@@ -256,10 +266,14 @@ export const googleAuthCallback = async (req, res) => {
       user = await User.create({
         name: profile.name,
         email: profile.email,
-        role: 'buyer', // Default role for OAuth registration
+        role: role,
         oauthProvider: 'google',
         oauthId: profile.oauthId,
       });
+    } else if (user.role !== role) {
+      // Dynamic role update for seamless role switching during login testing
+      user.role = role;
+      await user.save();
     }
 
     const token = generateToken(user._id);

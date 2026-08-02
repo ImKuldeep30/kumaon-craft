@@ -29,10 +29,30 @@ const inquirySchema = new mongoose.Schema({
     type: String,
     required: [true, 'Inquiry status is required'],
     enum: {
-      values: ['Pending Review', 'Quote Sent', 'In Discussion'],
+      values: ['Pending Review', 'Quote Sent', 'In Discussion', 'Approved', 'Shipped', 'Completed'],
       message: '{VALUE} is not a valid status',
     },
     default: 'Pending Review',
+  },
+  priceQuote: {
+    type: Number,
+    default: 0,
+  },
+  leadTime: {
+    type: String,
+    default: '',
+  },
+  shippingCost: {
+    type: Number,
+    default: 0,
+  },
+  artisanNotes: {
+    type: String,
+    default: '',
+  },
+  trackingCode: {
+    type: String,
+    default: '',
   },
   createdAt: {
     type: Date,

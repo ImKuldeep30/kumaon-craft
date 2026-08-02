@@ -25,9 +25,17 @@ const Navbar = () => {
         localStorage.setItem('theme', theme);
     }, [theme]);
 
+    const [userRole, setUserRole] = useState('');
+
     useEffect(() => {
         const session = localStorage.getItem('user_session');
-        setIsLoggedIn(!!session);
+        if (session) {
+            setIsLoggedIn(true);
+            setUserRole(JSON.parse(session).role || '');
+        } else {
+            setIsLoggedIn(false);
+            setUserRole('');
+        }
     }, [location.pathname]);
 
     const toggleTheme = () => {
@@ -37,22 +45,31 @@ const Navbar = () => {
     const handleLogout = () => {
         localStorage.removeItem('user_session');
         setIsLoggedIn(false);
+        setUserRole('');
         window.location.href = '/login';
     };
 
-    const navLinks = isLoggedIn
-        ? [
-              { name: 'Home', path: '/' },
-              { name: 'About', path: '/about' },
-              { name: 'Dashboard', path: '/dashboard' },
-              { name: 'Settings', path: '/settings' },
-              { name: 'Ask AI', path: '/chat' },
-          ]
-        : [
-              { name: 'Home', path: '/' },
-              { name: 'About', path: '/about' },
-              { name: 'Ask AI', path: '/chat' },
-          ];
+    const getNavLinks = () => {
+        if (!isLoggedIn) {
+            return [
+                { name: 'Home', path: '/' },
+                { name: 'About', path: '/about' },
+                { name: 'Ask AI', path: '/chat' },
+            ];
+        }
+        const links = [
+            { name: 'Home', path: '/' },
+            { name: 'About', path: '/about' },
+        ];
+        if (userRole === 'artisan') {
+            links.push({ name: 'Dashboard', path: '/dashboard' });
+        }
+        links.push({ name: 'Settings', path: '/settings' });
+        links.push({ name: 'Ask AI', path: '/chat' });
+        return links;
+    };
+
+    const navLinks = getNavLinks();
 
     const isActive = (path) => location.pathname === path;
 

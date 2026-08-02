@@ -1,8 +1,10 @@
 import React, { useState, useEffect, useRef } from 'react';
+import { useNavigate } from 'react-router-dom';
 import Button from './ui/Button';
 import { API_BASE_URL } from '../config';
 
 const ChatbotWidget = () => {
+  const navigate = useNavigate();
   const [isOpen, setIsOpen] = useState(false);
   const [messages, setMessages] = useState([
     {
@@ -27,6 +29,13 @@ const ChatbotWidget = () => {
   }, [messages, isOpen]);
 
   const handleSend = async (textToSend) => {
+    const session = localStorage.getItem('user_session');
+    if (!session) {
+      navigate('/login');
+      setIsOpen(false);
+      return;
+    }
+
     const text = textToSend || input;
     if (!text || text.trim() === '') return;
 

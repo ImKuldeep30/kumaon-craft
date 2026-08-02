@@ -17,7 +17,7 @@ const Modal = ({
   title,
   subtitle,
   children,
-  className = ''
+  className = 'max-w-md sm:max-w-lg md:max-w-xl'
 }) => {
   // Disable body scroll when modal is open
   useEffect(() => {
@@ -35,9 +35,9 @@ const Modal = ({
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-secondary-800/60 backdrop-blur-sm animate-fade-in">
-      <div className={`bg-warm-50 dark:bg-secondary-900 rounded-2xl max-w-md w-full shadow-2xl border border-warm-200 dark:border-secondary-800 overflow-hidden transform transition-all duration-300 scale-100 transition-theme ${className}`}>
+      <div className={`bg-warm-50 dark:bg-secondary-900 rounded-2xl w-full max-h-[calc(100vh-2rem)] flex flex-col shadow-2xl border border-warm-200 dark:border-secondary-800 overflow-hidden transform transition-all duration-300 scale-100 transition-theme ${className}`}>
         {/* Modal Header */}
-        <div className="bg-secondary-700 dark:bg-secondary-800 text-white p-6 flex justify-between items-center transition-theme">
+        <div className="bg-secondary-700 dark:bg-secondary-800 text-white p-6 flex justify-between items-center transition-theme shrink-0">
           <div>
             {subtitle && (
               <span className="text-[10px] uppercase tracking-widest text-primary-200 dark:text-primary-300 font-bold block mb-1 transition-theme">
@@ -58,7 +58,7 @@ const Modal = ({
         </div>
         
         {/* Modal Content */}
-        <div className="p-6">
+        <div className="p-6 overflow-y-auto flex-grow">
           {children}
         </div>
       </div>

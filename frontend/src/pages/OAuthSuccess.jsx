@@ -27,7 +27,11 @@ const OAuthSuccess = () => {
       
       // Delay navigation slightly to let the success loader animate nicely
       const timer = setTimeout(() => {
-        navigate('/dashboard');
+        if (role === 'buyer') {
+          navigate('/');
+        } else {
+          navigate('/dashboard');
+        }
       }, 1500);
 
       return () => clearTimeout(timer);
@@ -61,7 +65,7 @@ const OAuthSuccess = () => {
               Google Authenticated!
             </h2>
             <p className="text-sm text-secondary-600 dark:text-warm-300 transition-theme">
-              Securing connection and loading your personalized artisan dashboard...
+              Securing connection and loading Kumaon Craft Connect...
             </p>
           </>
         )}

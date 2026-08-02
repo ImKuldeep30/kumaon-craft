@@ -21,6 +21,29 @@ export const getInquiries = async (req, res, next) => {
 // @access  Public
 export const createInquiry = async (req, res, next) => {
   try {
+    const { buyerEmail, productName } = req.body;
+
+    if (!buyerEmail || !productName) {
+      return res.status(400).json({
+        success: false,
+        message: 'Buyer email and product name are required.'
+      });
+    }
+
+    // Check if there is already an active/pending inquiry for this product and buyer
+    const existingInquiry = await Inquiry.findOne({
+      buyerEmail: buyerEmail.toLowerCase(),
+      productName: productName,
+      status: { $in: ['Pending Review', 'Quote Sent', 'In Discussion'] }
+    });
+
+    if (existingInquiry) {
+      return res.status(400).json({
+        success: false,
+        message: `You already have an active sourcing request for "${productName}" (Status: ${existingInquiry.status}). Duplicate submissions are not allowed.`
+      });
+    }
+
     const inquiry = await Inquiry.create(req.body);
     res.status(201).json({
       success: true,
@@ -36,7 +59,7 @@ export const createInquiry = async (req, res, next) => {
 // @access  Public
 export const updateInquiryStatus = async (req, res, next) => {
   try {
-    const { status } = req.body;
+    const { status, priceQuote, leadTime, shippingCost, artisanNotes, trackingCode } = req.body;
     let inquiry = await Inquiry.findById(req.params.id);
     
     if (!inquiry) {
@@ -44,7 +67,13 @@ export const updateInquiryStatus = async (req, res, next) => {
       throw new Error(`Inquiry not found with id: ${req.params.id}`);
     }
     
-    inquiry.status = status;
+    if (status !== undefined) inquiry.status = status;
+    if (priceQuote !== undefined) inquiry.priceQuote = priceQuote;
+    if (leadTime !== undefined) inquiry.leadTime = leadTime;
+    if (shippingCost !== undefined) inquiry.shippingCost = shippingCost;
+    if (artisanNotes !== undefined) inquiry.artisanNotes = artisanNotes;
+    if (trackingCode !== undefined) inquiry.trackingCode = trackingCode;
+    
     await inquiry.save();
     
     res.status(200).json({

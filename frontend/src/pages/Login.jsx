@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { useNavigate, Link } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
+import { useNavigate, Link, useSearchParams } from 'react-router-dom';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
 import Button from '../components/ui/Button';
@@ -8,7 +8,9 @@ import Loader from '../components/ui/Loader';
 import { API_BASE_URL } from '../config';
 
 const Login = () => {
-  const [role, setRole] = useState('artisan'); // 'artisan' or 'buyer'
+  const [searchParams] = useSearchParams();
+  const initialRole = searchParams.get('role') || 'buyer';
+  const [role, setRole] = useState(initialRole);
   const [credentials, setCredentials] = useState({ email: '', password: '' });
   const [error, setError] = useState('');
   const [isLoading, setIsLoading] = useState(false);
@@ -46,6 +48,7 @@ const Login = () => {
         body: JSON.stringify({
           email: credentials.email,
           password: credentials.password,
+          role,
         }),
       });
 
@@ -64,7 +67,11 @@ const Login = () => {
           })
         );
         setTimeout(() => {
-          navigate('/dashboard');
+          if (result.data.role === 'buyer') {
+            navigate('/');
+          } else {
+            navigate('/dashboard');
+          }
         }, 1000);
       } else {
         setError(result.message || 'Invalid email or password.');
@@ -77,7 +84,7 @@ const Login = () => {
   };
 
   const handleGoogleSignIn = () => {
-    window.location.href = `${API_BASE_URL}/api/auth/google`;
+    window.location.href = `${API_BASE_URL}/api/auth/google?role=${role}`;
   };
 
   return (
@@ -85,45 +92,21 @@ const Login = () => {
       <Navbar />
 
       {/* Main Container */}
-      <div className="flex-grow flex items-center justify-center py-20 px-4">
+      <div className="flex-grow flex items-center justify-center py-12 md:py-16 px-4">
         
         {/* Larger Simple Login Card */}
-        <div className="w-full max-w-lg bg-white dark:bg-secondary-800/80 border border-warm-200 dark:border-secondary-700/60 rounded-2xl shadow-md p-10 sm:p-12 space-y-8 transition-theme">
+        <div className="w-full max-w-md sm:max-w-lg md:max-w-xl bg-white dark:bg-secondary-800/80 border border-warm-200 dark:border-secondary-700/60 rounded-2xl shadow-md p-10 sm:p-12 space-y-8 transition-theme">
           
           {/* Header */}
           <div className="space-y-3 text-center">
             <h1 className="font-serif text-3xl sm:text-4xl font-bold text-secondary-800 dark:text-warm-100 transition-theme">
-              Sign In
+              {role === 'buyer' ? 'Sign In' : 'Artisan / Admin Sign In'}
             </h1>
             <p className="text-base text-secondary-600 dark:text-warm-200 font-light transition-theme">
-              Choose your account type to access the platform.
+              {role === 'buyer' 
+                ? 'Sign in to access your wholesale sourcing history and place orders.' 
+                : 'Access your artisan dashboard to manage products and inquiries.'}
             </p>
-          </div>
-
-          {/* Simple Tab Role Selector */}
-          <div className="flex border-b border-warm-200 dark:border-secondary-700 transition-theme">
-            <Button
-              variant="ghost"
-              onClick={() => handleToggleRole('artisan')}
-              className={`flex-1 !rounded-none !bg-transparent border-b-2 !pb-3 !pt-0 !px-0 text-sm font-bold uppercase tracking-wider active:scale-100 transition-all ${
-                role === 'artisan'
-                  ? 'border-primary-500 text-primary-600 dark:text-primary-400'
-                  : 'border-transparent text-secondary-600 dark:text-warm-300 hover:text-secondary-800 dark:hover:text-warm-100'
-              }`}
-            >
-              Artisan / Admin
-            </Button>
-            <Button
-              variant="ghost"
-              onClick={() => handleToggleRole('buyer')}
-              className={`flex-1 !rounded-none !bg-transparent border-b-2 !pb-3 !pt-0 !px-0 text-sm font-bold uppercase tracking-wider active:scale-100 transition-all ${
-                role === 'buyer'
-                  ? 'border-primary-500 text-primary-600 dark:text-primary-400'
-                  : 'border-transparent text-secondary-600 dark:text-warm-300 hover:text-secondary-800 dark:hover:text-warm-100'
-              }`}
-            >
-              Wholesale Buyer
-            </Button>
           </div>
 
           {/* Feedback messages */}
@@ -208,27 +191,47 @@ const Login = () => {
             </form>
           )}
 
-          <div className="text-center text-sm text-secondary-600 dark:text-warm-300">
-            Don't have an account?{' '}
-            <Link to="/register" className="text-primary-600 dark:text-primary-400 font-bold hover:underline">
-              Register
-            </Link>
-          </div>
-
-          {/* Simple Mock Credentials Helper */}
-          <div className="bg-warm-100/60 dark:bg-secondary-900/60 p-5 rounded-xl border border-warm-200 dark:border-secondary-800 text-xs sm:text-sm space-y-2 transition-theme">
-            <span className="font-bold text-secondary-800 dark:text-warm-100 block transition-theme">Demonstration Login Details:</span>
-            <p className="text-secondary-600 dark:text-warm-300 leading-relaxed transition-theme">
-              <strong>Role:</strong> {role === 'artisan' ? 'Artisan Account' : 'Wholesale Buyer Account'} <br />
-              <strong>Email:</strong> {role === 'artisan' ? 'artisan@kumaon.org' : 'buyer@kumaon.org'} <br />
-              <strong>Password:</strong> <code className="bg-warm-200/80 dark:bg-secondary-700 px-1.5 py-0.5 rounded text-[11px] font-mono text-secondary-800 dark:text-warm-100">password123</code>
-            </p>
+          <div className="text-center text-sm text-secondary-600 dark:text-warm-300 space-y-2.5">
+            <div>
+              Don't have an account?{' '}
+              <Link to={`/register?role=${role}`} className="text-primary-600 dark:text-primary-400 font-bold hover:underline">
+                Register
+              </Link>
+            </div>
+            <div className="text-xs opacity-80 pt-1">
+              {role === 'buyer' ? (
+                <span>
+                  Are you an Artisan or Admin?{' '}
+                  <button
+                    type="button"
+                    onClick={() => handleToggleRole('artisan')}
+                    className="text-primary-600 dark:text-primary-400 font-bold hover:underline cursor-pointer bg-transparent border-none p-0 inline"
+                  >
+                    Sign In Here
+                  </button>
+                </span>
+              ) : (
+                <span>
+                  Back to{' '}
+                  <button
+                    type="button"
+                    onClick={() => handleToggleRole('buyer')}
+                    className="text-primary-600 dark:text-primary-400 font-bold hover:underline cursor-pointer bg-transparent border-none p-0 inline"
+                  >
+                    Wholesale Buyer Sign In
+                  </button>
+                </span>
+              )}
+            </div>
           </div>
 
         </div>
       </div>
 
-      <Footer />
+      {/* Simple Copyright Footer to allow absolute vertical centering */}
+      <div className="bg-warm-50/50 dark:bg-secondary-900/10 py-6 text-center text-xs text-secondary-500 border-t border-warm-200/40 dark:border-secondary-800/40 transition-theme shrink-0">
+        <p>© {new Date().getFullYear()} Kumaon Craft Connect. All rights reserved.</p>
+      </div>
     </div>
   );
 };
