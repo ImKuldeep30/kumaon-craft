@@ -19,10 +19,10 @@ const Dashboard = () => {
   
   // New product form states
   const [showAddForm, setShowAddForm] = useState(false);
-  const [newProduct, setNewProduct] = useState({ name: '', category: 'Handloom', price: '', minOrder: 10 });
+  const [newProduct, setNewProduct] = useState({ name: '', category: 'Handloom', price: '', minOrder: 10, image: 'https://images.unsplash.com/photo-1544816155-12df9643f363?q=80&w=600&auto=format&fit=crop' });
   const [notification, setNotification] = useState('');
   const [showEditForm, setShowEditForm] = useState(false);
-  const [editProduct, setEditProduct] = useState({ _id: '', name: '', category: 'Handloom', price: '', minOrder: 10 });
+  const [editProduct, setEditProduct] = useState({ _id: '', name: '', category: 'Handloom', price: '', minOrder: 10, image: '' });
   const [showConfirmModal, setShowConfirmModal] = useState(false);
   const [productToDelete, setProductToDelete] = useState(null);
 
@@ -91,7 +91,7 @@ const Dashboard = () => {
           price: newProduct.price,
           minOrder: parseInt(newProduct.minOrder) || 10,
           artisan: user.email === 'artisan@kumaon.org' ? 'Almora Weavers Guild' : 'Himalayan Artisans',
-          image: 'https://images.unsplash.com/photo-1544816155-12df9643f363?q=80&w=600&auto=format&fit=crop',
+          image: newProduct.image || 'https://images.unsplash.com/photo-1544816155-12df9643f363?q=80&w=600&auto=format&fit=crop',
           description: `Handcrafted ${newProduct.category} product listing published via dashboard panel.`
         }),
       });
@@ -99,7 +99,7 @@ const Dashboard = () => {
       if (result.success) {
         setProducts([result.data, ...products]);
         setShowAddForm(false);
-        setNewProduct({ name: '', category: 'Handloom', price: '', minOrder: 10 });
+        setNewProduct({ name: '', category: 'Handloom', price: '', minOrder: 10, image: 'https://images.unsplash.com/photo-1544816155-12df9643f363?q=80&w=600&auto=format&fit=crop' });
         setNotification('New craft product added successfully!');
       } else {
         setNotification(`Error: ${result.message}`);
@@ -158,7 +158,8 @@ const Dashboard = () => {
       name: product.name,
       category: product.category,
       price: product.price,
-      minOrder: product.minOrder
+      minOrder: product.minOrder,
+      image: product.image || ''
     });
     setShowEditForm(true);
   };
@@ -185,6 +186,7 @@ const Dashboard = () => {
           category: editProduct.category,
           price: editProduct.price,
           minOrder: parseInt(editProduct.minOrder) || 10,
+          image: editProduct.image || 'https://images.unsplash.com/photo-1544816155-12df9643f363?q=80&w=600&auto=format&fit=crop',
         }),
       });
       const result = await response.json();
@@ -487,13 +489,28 @@ const Dashboard = () => {
               label="Category"
               select
               value={newProduct.category}
-              onChange={(e) => setNewProduct({ ...newProduct, category: e.target.value })}
+              onChange={(e) => {
+                const cat = e.target.value;
+                let defaultImg = 'https://images.unsplash.com/photo-1544816155-12df9643f363?q=80&w=600&auto=format&fit=crop';
+                if (cat === 'Copperware') defaultImg = 'https://images.unsplash.com/photo-1576016770956-debb63d900bb?q=80&w=600&auto=format&fit=crop';
+                if (cat === 'Woodcraft') defaultImg = 'https://images.unsplash.com/photo-1531835551805-16d864c8d311?q=80&w=600&auto=format&fit=crop';
+                if (cat === 'Aipan Art') defaultImg = 'https://images.unsplash.com/photo-1561715276-a2d087060f1d?q=80&w=600&auto=format&fit=crop';
+                setNewProduct({ ...newProduct, category: cat, image: defaultImg });
+              }}
             >
               <option value="Handloom">Handloom</option>
               <option value="Copperware">Copperware</option>
               <option value="Woodcraft">Woodcraft</option>
               <option value="Aipan Art">Aipan Art</option>
             </Input>
+
+            <Input
+              label="Image URL"
+              type="text"
+              value={newProduct.image}
+              onChange={(e) => setNewProduct({ ...newProduct, image: e.target.value })}
+              placeholder="Paste custom image link (optional)"
+            />
 
             <Input
               label="Wholesale Pricing"
@@ -545,13 +562,28 @@ const Dashboard = () => {
                   label="Category"
                   select
                   value={editProduct.category}
-                  onChange={(e) => setEditProduct({ ...editProduct, category: e.target.value })}
+                  onChange={(e) => {
+                    const cat = e.target.value;
+                    let defaultImg = 'https://images.unsplash.com/photo-1544816155-12df9643f363?q=80&w=600&auto=format&fit=crop';
+                    if (cat === 'Copperware') defaultImg = 'https://images.unsplash.com/photo-1576016770956-debb63d900bb?q=80&w=600&auto=format&fit=crop';
+                    if (cat === 'Woodcraft') defaultImg = 'https://images.unsplash.com/photo-1531835551805-16d864c8d311?q=80&w=600&auto=format&fit=crop';
+                    if (cat === 'Aipan Art') defaultImg = 'https://images.unsplash.com/photo-1561715276-a2d087060f1d?q=80&w=600&auto=format&fit=crop';
+                    setEditProduct({ ...editProduct, category: cat, image: defaultImg });
+                  }}
                 >
                   <option value="Handloom">Handloom</option>
                   <option value="Copperware">Copperware</option>
                   <option value="Woodcraft">Woodcraft</option>
                   <option value="Aipan Art">Aipan Art</option>
                 </Input>
+
+                <Input
+                  label="Image URL"
+                  type="text"
+                  value={editProduct.image}
+                  onChange={(e) => setEditProduct({ ...editProduct, image: e.target.value })}
+                  placeholder="Paste custom image link (optional)"
+                />
 
                 <Input
                   label="Wholesale Pricing"
