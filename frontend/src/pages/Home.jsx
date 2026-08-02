@@ -6,6 +6,7 @@ import Button from '../components/ui/Button';
 import Input from '../components/ui/Input';
 import Toast from '../components/ui/Toast';
 import ChatbotWidget from '../components/ChatbotWidget';
+import { API_BASE_URL } from '../config';
 
 const Home = () => {
     const [selectedCategory, setSelectedCategory] = useState('All');
@@ -22,7 +23,7 @@ const Home = () => {
         const fetchProducts = async () => {
             try {
                 setIsLoading(true);
-                let url = 'http://localhost:5000/api/products';
+                let url = `${API_BASE_URL}/api/products`;
                 const params = [];
                 if (selectedCategory && selectedCategory !== 'All') {
                     params.push(`category=${selectedCategory}`);
@@ -57,7 +58,7 @@ const Home = () => {
 
     const handleInquirySubmit = async (product, details) => {
         try {
-            const response = await fetch('http://localhost:5000/api/inquiries', {
+            const response = await fetch(`${API_BASE_URL}/api/inquiries`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

@@ -5,6 +5,7 @@ import Footer from '../components/Footer';
 import Button from '../components/ui/Button';
 import Input from '../components/ui/Input';
 import Loader from '../components/ui/Loader';
+import { API_BASE_URL } from '../config';
 
 const Login = () => {
   const [role, setRole] = useState('artisan'); // 'artisan' or 'buyer'
@@ -37,7 +38,7 @@ const Login = () => {
     setError('');
 
     try {
-      const response = await fetch('http://localhost:5000/api/auth/login', {
+      const response = await fetch(`${API_BASE_URL}/api/auth/login`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -76,7 +77,7 @@ const Login = () => {
   };
 
   const handleGoogleSignIn = () => {
-    window.location.href = 'http://localhost:5000/api/auth/google';
+    window.location.href = `${API_BASE_URL}/api/auth/google`;
   };
 
   return (

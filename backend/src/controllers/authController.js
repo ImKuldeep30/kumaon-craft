@@ -265,18 +265,20 @@ export const googleAuthCallback = async (req, res) => {
     const token = generateToken(user._id);
 
     // Redirect user back to frontend landing page with authentication query parameters
-    const redirectUrl = `http://localhost:5173/oauth-success?token=${token}&email=${encodeURIComponent(
+    const frontendUrl = process.env.FRONTEND_URL || 'http://localhost:5173';
+    const redirectUrl = `${frontendUrl}/oauth-success?token=${token}&email=${encodeURIComponent(
       user.email
     )}&role=${user.role}&name=${encodeURIComponent(user.name)}`;
     
     res.redirect(redirectUrl);
   } catch (error) {
     console.error('Google OAuth Callback Error:', error.message);
+    const frontendUrl = process.env.FRONTEND_URL || 'http://localhost:5173';
     res.status(500).send(`
       <div style="font-family: sans-serif; text-align: center; padding: 50px;">
         <h2 style="color: #dc2626;">Authentication Failed</h2>
         <p>${error.message}</p>
-        <a href="http://localhost:5173/login" style="color: #2563eb; text-decoration: none;">Return to Login</a>
+        <a href="${frontendUrl}/login" style="color: #2563eb; text-decoration: none;">Return to Login</a>
       </div>
     `);
   }

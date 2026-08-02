@@ -7,6 +7,7 @@ import Input from '../components/ui/Input';
 import Modal from '../components/ui/Modal';
 import Toast from '../components/ui/Toast';
 import ChatbotWidget from '../components/ChatbotWidget';
+import { API_BASE_URL } from '../config';
 
 
 const Dashboard = () => {
@@ -36,13 +37,13 @@ const Dashboard = () => {
       
       const headers = token ? { 'Authorization': `Bearer ${token}` } : {};
 
-      const resInq = await fetch('http://localhost:5000/api/inquiries', { headers });
+      const resInq = await fetch(`${API_BASE_URL}/api/inquiries`, { headers });
       const dataInq = await resInq.json();
       if (dataInq.success) {
         setInquiries(dataInq.data);
       }
 
-      const resProd = await fetch('http://localhost:5000/api/products', { headers });
+      const resProd = await fetch(`${API_BASE_URL}/api/products`, { headers });
       const dataProd = await resProd.json();
       if (dataProd.success) {
         setProducts(dataProd.data);
@@ -78,7 +79,7 @@ const Dashboard = () => {
       const session = localStorage.getItem('user_session');
       const token = session ? JSON.parse(session).token : '';
       
-      const response = await fetch('http://localhost:5000/api/products', {
+      const response = await fetch(`${API_BASE_URL}/api/products`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -132,7 +133,7 @@ const Dashboard = () => {
       const session = localStorage.getItem('user_session');
       const token = session ? JSON.parse(session).token : '';
       
-      const response = await fetch(`http://localhost:5000/api/products/${id}`, {
+      const response = await fetch(`${API_BASE_URL}/api/products/${id}`, {
         method: 'DELETE',
         headers: {
           'Authorization': `Bearer ${token}`
@@ -173,7 +174,7 @@ const Dashboard = () => {
       const session = localStorage.getItem('user_session');
       const token = session ? JSON.parse(session).token : '';
       
-      const response = await fetch(`http://localhost:5000/api/products/${editProduct._id}`, {
+      const response = await fetch(`${API_BASE_URL}/api/products/${editProduct._id}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
@@ -205,7 +206,7 @@ const Dashboard = () => {
       const session = localStorage.getItem('user_session');
       const token = session ? JSON.parse(session).token : '';
       
-      const response = await fetch(`http://localhost:5000/api/inquiries/${id}`, {
+      const response = await fetch(`${API_BASE_URL}/api/inquiries/${id}`, {
         method: 'PATCH',
         headers: {
           'Content-Type': 'application/json',

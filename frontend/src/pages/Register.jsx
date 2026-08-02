@@ -5,6 +5,7 @@ import Footer from '../components/Footer';
 import Button from '../components/ui/Button';
 import Input from '../components/ui/Input';
 import Loader from '../components/ui/Loader';
+import { API_BASE_URL } from '../config';
 
 const Register = () => {
   const [role, setRole] = useState('buyer'); // default role is buyer
@@ -40,7 +41,7 @@ const Register = () => {
     setError('');
 
     try {
-      const response = await fetch('http://localhost:5000/api/auth/register', {
+      const response = await fetch(`${API_BASE_URL}/api/auth/register`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

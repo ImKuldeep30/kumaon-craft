@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import Button from './ui/Button';
+import { API_BASE_URL } from '../config';
 
 const ChatbotWidget = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -49,7 +50,7 @@ const ChatbotWidget = () => {
           content: msg.content,
         }));
 
-      const response = await fetch('http://localhost:5000/api/ai/chat', {
+      const response = await fetch(`${API_BASE_URL}/api/ai/chat`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
